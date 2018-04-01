@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace Alumni\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;

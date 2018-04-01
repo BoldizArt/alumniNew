@@ -1,35 +1,25 @@
 <?php
+namespace Alumni\Http\Controllers;
 
-namespace App\Http\Controllers;
-
+use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+
 // Main controllers
-use App\Profile;
+use Alumni\Profile;
+use Alumni\User;
+use Alumni\TemporaryProfiles;
 
 class ProfileController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
+    public function __construct()
     {
-        // /profile
-        $data = Profile::all();
-        // Profile::orderBy('ime', 'asc')->get();
-        // Profile::where('ime, 'Boldižar')->get();
-        // Profile::orderBy('ime', 'asc')->take(1)->get();
-        // Profile::orderBy('ime', 'asc')->paginate(1);
-        // return view('profile.index')->with('data', $data);
-
-        // {{ $profiles->links }} //
-
-        return response()->json([
-            //'body' => view('profile.index')->with('data', $data)->render(),
-            'data' => $data,
-        ]);
+        $this->middleware('auth');
     }
 
     /**
@@ -39,9 +29,18 @@ class ProfileController extends Controller
      */
     public function create()
     {
+        // Get current user id
+        $uid = \Auth::user()->id;
+        $user = Profile::where('uid', $uid)->get();
+
+        // If not exixist profile for this user, redirect it to show profile
+        if(count($user) > 0)
+        {
+            return redirect('/profile/me/show')->withErrors(['msg' => 'Kreirali ste već jedan profil. Ukoliko želite da izmenite, ovde možete uraditi.'])->withSuccess('Uspešno ste kreirali svoj novi profil. Čestitamo!');
+        }
         // /profile/create
-        $data = 'Create profile';
-        return view('profile.create')->with('data', $data);
+        $title = 'Kreiraj profil';
+        return view('profile.create')->with('title', $title);
     }
 
     /**
@@ -53,45 +52,127 @@ class ProfileController extends Controller
     public function store(Request $request)
     {
         // /profile [POST]
-        return 'Store profile data';
+
+        $input = $request->all();
+
+        $rules =
+        [
+            'ime' => 'required|string|min:3',
+            'prezime' => 'required|string|min:3',
+            'slika' => 'mimes:jpeg,jpg,png|max:1999',
+            'smer' => 'required',
+            'nivo_studija' => 'required',
+            'godina_diplomiranja' => 'required|date_format:Y|max:'.date('Y'),
+            'biografija' => 'required'
+        ];
+
+        $messages =
+        [
+            'required' => 'Polje :attribute je obavezno!',
+            'date_format' => 'Upišite samo godinu diplomiranja.',
+            'mimes' => 'Dozvoljeni formati fajla su jpeg, jpg i png.',
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);        
+
+        if ($validator->fails()) {
+            return redirect('profile/me/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
+        if ($request->hasFile('input_img')) {
+            $image = $request->file('input_img');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $name);
+            $this->save();
+    
+            return back()->with('success','Image Upload successfully');
+        }
+
+        // Upload image
+        if($request->hasFile('slika')){
+            $image = $request->file('slika');
+            $imageName = $request->input('prezime').'_'.time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $imageName);
+        }
+        else
+        {
+            $imageName = 'profile.png';
+        }
+
+        // Create profile
+        $profile = new Profile;
+        $profile->uid = \Auth::user()->id; // rand(25, 120);
+        $profile->langcode = 'sr';
+        $profile->ime = ucwords($request->input('ime'));
+        $profile->prezime = ucwords($request->input('prezime'));
+        $profile->slika = $imageName;
+        $profile->smer = $request->input('smer');
+        $profile->nivo_studija = $request->input('nivo_studija');
+        $profile->godina_diplomiranja = $request->input('godina_diplomiranja');
+        $profile->naziv_firme = empty($request->input('naziv_firme')) ? '/' : $request->input('naziv_firme');
+        $profile->radno_mesto = empty($request->input('radno_mesto')) ? '/' : $request->input('radno_mesto');
+        $profile->biografija = $request->input('biografija');
+        $profile->poruka = empty($request->input('poruka')) ? '' : $request->input('poruka');
+        $profile->save();
+
+        return redirect('/profile/me/show')->with('success', 'Uspešno ste kreirali profil.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        // /profile/{id} [GET]
-        $info = [
-            'id' => $id,
-            'ime' => 'Boldižar',
-            'prezime' => 'Santo',
-            'smer' => 'Odevno inženjerstvo',
-            'nivostudija' => 'Master studije',
-            'godinadipl' => '2017',
-            'nazivfirme' => 'BoldizArt Webdesign',
-            'radnomesto' => 'Webdesigner',
-            'bio' => 'Lorem ipsum dolor sit amet,sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, At vero eos et accusam et justo duo dolores et ea rebum. Lorem ipsum dolor sit amet, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. no sea takimata sanctus est Lorem ipsum dolor sit amet. no sea takimata sanctus est Lorem ipsum dolor sit amet. sed diam voluptua.',
-            'poruka' => 'Uspešni ljudi uvek traže mogućnosti da pomognu drugima. Neuspešni uvek pitaju: Šta ja imam od toga? Vi ste jedini koji možete da odlučite kakva ćete biti osoba, niko više!'
-        ];
+        // Get current user id
+        $uid = \Auth::user()->id;
+        $user = TemporaryProfiles::where('uid', $uid)->get();
 
-        return view('profile.show')->with('info', $info);
+        // If temporary profile does not exist, check for public profile
+        if(count($user) < 1)
+        {
+            $user = Profile::where('uid', $uid)->get();
+        }
+
+        // If not exixist any profile for this user, redirect it to create profile
+        if(count($user) < 1){
+            return redirect('/profile/me/create')->withErrors(['msg' => 'You does not have a frofile yet. Create it.']);
+        }
+
+        // If isset the profile, return view
+        return view('profile.self')->with('data', $user);
+ 
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
+     * Show the form for editing the profile.
+     * 
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        // /profile/{id}/edit [GET]
-        $data = 'Edit profile';
-        return view('profile.edit')->with('data', $data);
+        // /profile/edit [GET]
+
+        // Get current user id
+        $uid = \Auth::user()->id;
+        // Get profile for this id
+        $profile = Profile::where('uid', $uid)->get();
+        return $profile;
+        
+        // If not exist profile with user id, redirect to the create profile page
+        if(!empty($profile)){
+            return view('profile.edit')->with('data', $data); 
+        }
+        else
+        {
+            return redirect('/profile/create')->with('alert', 'You do not have a profile yet, create it.');;
+        }
     }
 
     /**
@@ -101,7 +182,7 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         // /profile/{id} [PUT]
         $data = 'Update profile';

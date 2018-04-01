@@ -1,0 +1,22 @@
+.show-profile .-info td {
+  padding: 15px 25px;
+}
+
+.card-alert {
+  position: fixed;
+  top: 110px;
+  right: 25px;
+}
+
+.carousel-inner {
+  margin-top: 90px;
+  max-height: 480px;
+}
+
+.has-danger input, .has-danger textarea, .has-danger select {
+  border: 1px solid #dc3545;
+}
+
+h2, h3, h4, h5, h6 {
+  text-transform: none;
+}

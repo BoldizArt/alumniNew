@@ -4,10 +4,10 @@ namespace Alumni;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class TemporaryProfiles extends Model
 {
     // Table name
-    protected $table = 'profiles';
+    protected $table = 'temporary_profiles';
     // Primary key
     public $primaryKey = 'id';
     // Timestamp

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProfilesTable extends Migration
+class TemporaryProfiles extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,20 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('temporary_profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->smallInteger('uid')->unique();
+            $table->string('langcode', 12);
             $table->string('ime', 45);
             $table->string('prezime', 45);
-            $table->string('jezik_sajta', 3);
+            $table->string('slika', 125);
             $table->string('smer', 65);
             $table->string('nivo_studija', 45);
             $table->year('godina_diplomiranja');
+            $table->string('naziv_firme', 250);
             $table->string('radno_mesto', 250);
             $table->mediumText('biografija');
-            $table->string('poruka');
+            $table->string('poruka', 550);
             $table->timestamps();
         });
     }
@@ -36,6 +38,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('temporary_profiles');
     }
 }
