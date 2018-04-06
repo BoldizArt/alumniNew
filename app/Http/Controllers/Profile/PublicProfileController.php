@@ -1,6 +1,7 @@
 <?php
-namespace Alumni\Http\Controllers;
+namespace Alumni\Http\Controllers\Profile;
 
+use Alumni\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Alumni\Profile;
 
@@ -14,19 +15,8 @@ class PublicProfileController extends Controller
     public function index()
     {
         // /profile
-        $data = Profile::all();
-        // Profile::orderBy('ime', 'asc')->get();
-        // Profile::where('ime', 'Boldižar')->get();
-        // Profile::orderBy('ime', 'asc')->take(1)->get();
-        // Profile::orderBy('ime', 'asc')->paginate(1);
-        // return view('profile.index')->with('data', $data);
-
-        // {{ $profiles->links }} //
-
-        return response()->json([
-            //'body' => view('profile.index')->with('data', $data)->render(),
-            'data' => $data,
-        ]);
+        $data = Profile::orderBy('ime', 'asc')->paginate(10);
+        return view('profile.index')->with('data', $data);
     }
 
     /**
@@ -37,10 +27,10 @@ class PublicProfileController extends Controller
      */
     public function show($id)
     {
-        $user = Profile::find($id);
-        if(count($user) < 1){
+        $profile = Profile::find($id);
+        if(count($profile) < 1){
             return redirect()->back()->withErrors(['msg' => 'Can not find this user.']);
         }
-        return view('profile.show')->with('data', $user);
+        return view('profile.show')->with('profile', $profile);
     }
 }

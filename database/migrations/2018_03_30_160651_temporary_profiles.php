@@ -13,7 +13,8 @@ class TemporaryProfiles extends Migration
      */
     public function up()
     {
-        Schema::create('temporary_profiles', function (Blueprint $table) {
+        Schema::create('temporary_profiles', function (Blueprint $table)
+        {
             $table->increments('id');
             $table->smallInteger('uid')->unique();
             $table->string('langcode', 12);
@@ -23,8 +24,8 @@ class TemporaryProfiles extends Migration
             $table->string('smer', 65);
             $table->string('nivo_studija', 45);
             $table->year('godina_diplomiranja');
-            $table->string('naziv_firme', 250);
-            $table->string('radno_mesto', 250);
+            $table->string('naziv_firme', 250)->nullable();
+            $table->string('radno_mesto', 250)->nullable();
             $table->mediumText('biografija');
             $table->string('poruka', 550);
             $table->timestamps();

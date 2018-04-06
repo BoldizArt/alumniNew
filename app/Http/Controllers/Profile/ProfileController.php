@@ -1,7 +1,8 @@
 <?php
-namespace Alumni\Http\Controllers;
+namespace Alumni\Http\Controllers\Profile;
 
 use Validator;
+use Alumni\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -31,12 +32,13 @@ class ProfileController extends Controller
     {
         // Get current user id
         $uid = \Auth::user()->id;
-        $user = Profile::where('uid', $uid)->get();
+        $profile = Profile::where('uid', $uid)->count();
+        $temporaryProfile = TemporaryProfiles::where('uid', $uid)->count();
 
         // If not exixist profile for this user, redirect it to show profile
-        if(count($user) > 0)
+        if($profile > 0 || $temporaryProfile > 0)
         {
-            return redirect('/profile/me/show')->withErrors(['msg' => 'Kreirali ste već jedan profil. Ukoliko želite da izmenite, ovde možete uraditi.'])->withSuccess('Uspešno ste kreirali svoj novi profil. Čestitamo!');
+            return redirect('/profile/me/show')->withErrors(['msg' => 'Kreirali ste već jedan profil. Ukoliko želite da izmenite, ovde možete uraditi.']);
         }
         // /profile/create
         $title = 'Kreiraj profil';
@@ -104,13 +106,15 @@ class ProfileController extends Controller
             $imageName = 'profile.png';
         }
 
-        // Create profile
-        $profile = new Profile;
+        // Create / update profile
+        $haveTemporaryProfile = $this->getTemporaryProfile();
+
+        $profile = ($haveTemporaryProfile) ? $haveTemporaryProfile : new TemporaryProfiles;
         $profile->uid = \Auth::user()->id; // rand(25, 120);
         $profile->langcode = 'sr';
         $profile->ime = ucwords($request->input('ime'));
         $profile->prezime = ucwords($request->input('prezime'));
-        $profile->slika = $imageName;
+        ($haveTemporaryProfile) ? '' : $profile->slika = $imageName;
         $profile->smer = $request->input('smer');
         $profile->nivo_studija = $request->input('nivo_studija');
         $profile->godina_diplomiranja = $request->input('godina_diplomiranja');
@@ -130,24 +134,23 @@ class ProfileController extends Controller
      */
     public function show()
     {
-        // Get current user id
+        // Get current user id 
         $uid = \Auth::user()->id;
-        $user = TemporaryProfiles::where('uid', $uid)->get();
+        $profile = TemporaryProfiles::where('uid', $uid)->first();
 
         // If temporary profile does not exist, check for public profile
-        if(count($user) < 1)
+        if(count($profile) < 1)
         {
-            $user = Profile::where('uid', $uid)->get();
+            $profile = Profile::where('uid', $uid)->first();
         }
 
         // If not exixist any profile for this user, redirect it to create profile
-        if(count($user) < 1){
-            return redirect('/profile/me/create')->withErrors(['msg' => 'You does not have a frofile yet. Create it.']);
+        if(count($profile) < 1){
+            return redirect('/profile/me/create')->withErrors(['msg' => 'Niste još kreirali profil.']);
         }
 
         // If isset the profile, return view
-        return view('profile.self')->with('data', $user);
- 
+        return view('profile.show')->with('profile', $profile);
     }
 
     /**
@@ -158,21 +161,21 @@ class ProfileController extends Controller
     public function edit()
     {
         // /profile/edit [GET]
+        $profile = $this->getTemporaryProfile();
 
-        // Get current user id
-        $uid = \Auth::user()->id;
-        // Get profile for this id
-        $profile = Profile::where('uid', $uid)->get();
-        return $profile;
-        
-        // If not exist profile with user id, redirect to the create profile page
-        if(!empty($profile)){
-            return view('profile.edit')->with('data', $data); 
-        }
-        else
+        // If temporary profile does not exist, check for public profile
+        if(!$profile)
         {
-            return redirect('/profile/create')->with('alert', 'You do not have a profile yet, create it.');;
+            $profile = $this->getProfile();
         }
+
+        // If not exixist any profile for this user, redirect it to create profile
+        if(!$profile){
+            return redirect('/profile/me/create')->withErrors(['msg' => 'Niste još kreirali profil.']);
+        }
+
+        // If isset the profile, return view
+        return view('profile.create')->with(['profile' => $profile, 'title' => 'Izmeni profil']);
     }
 
     /**
@@ -200,4 +203,23 @@ class ProfileController extends Controller
         // /profile/{id} [DELETE]
         return 'Delete profile - '.$id;
     }
+
+    private function getProfile()
+    {
+        // Get current user id
+        $uid = \Auth::user()->id;
+        $profile = Profile::where('uid', $uid)->first();
+
+        return (count($profile) < 1) ? false : $profile;
+    }
+
+    private function getTemporaryProfile()
+    {
+        // Get current user id
+        $uid = \Auth::user()->id;
+        $profile = TemporaryProfiles::where('uid', $uid)->first();
+
+        return (count($profile) < 1) ? false : $profile;
+    }
+
 }

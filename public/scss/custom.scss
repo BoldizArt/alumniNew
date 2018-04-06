@@ -1,8 +1,27 @@
 $red: #dc3545;
 
+html, body{
+    margin: 0;
+    padding: 0;
+    height: 100%;   
+}
+
 .show-profile{
+    .profile-image{
+        border-radius: 50%;
+        width: 90%;
+    }
     .-info{
-        td{ padding: 15px 25px; }
+        tr{
+            &:last-child{
+                &:hover{
+                    background: none;
+                }
+            }
+        }
+        td{ 
+            padding: 15px 25px;
+        }
     }
 }
 
@@ -25,4 +44,45 @@ $red: #dc3545;
 
 h2, h3, h4, h5, h6{
     text-transform: none;
+}
+
+.profile-container{
+    width: 75%;
+    margin: 10px auto;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    .profile-image{
+        width: 100%;
+        height: auto;
+        border-radius: 50%;
+        -webkit-transition: all 1s ease;
+        transition: all 1s ease;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        &:hover{
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+    }
+}
+
+.statistics-container{
+    background: rgba(0,0,0,0.25);
+    padding: 45px 0 25px 0;
+}
+
+.profiles-container{
+    .profile-image{
+        width: 65px;
+        height: auto;
+        border-radius: 50%;
+    }
+}
+
+.pagination{
+    ul{
+        margin: auto;
+    }
 }

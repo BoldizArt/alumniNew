@@ -48,7 +48,7 @@
 							</tr>
 							<tr>
 								<td style="font-weight: bold; color: grey;">Izmeni profil</td>
-							<td><a btn class="btn btn-success" href="/profile/me/edit">Izmeni</a></td>
+								<td><a btn class="btn btn-success" href="/profile/me/edit">Izmeni</a></td>
 							</tr>
 
 						</tbody>

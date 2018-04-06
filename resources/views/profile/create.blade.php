@@ -11,26 +11,26 @@
 <div class="col-sm-3">
 
 	<label>Nemoj sliku zaboraviti...</label>
-	<img style="width: 100%;" src="/images/profile.png" alt="Card image">
+	<img style="width: 100%;" src="@if($profile->slika)/images/{{$profile->slika}}@else/images/profile.png @endif" alt="Card image">
 				
 </div>
 <div class="col-sm-9">
 
 		
 
-	{!! Form::open(['action' => 'ProfileController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+	{!! Form::open(['action' => 'Profile\ProfileController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
 	{!! Form::token() !!}
 	
 	<div class="form-group @if($errors->has('ime')) has-danger @endif">
 		{{Form::label('ime', 'Ime')}}
-		{{Form::text('ime', '', ['class' => 'form-control', 'placeholder' => 'Ime'])}}
+		{{Form::text('ime', $profile->ime, ['class' => 'form-control', 'placeholder' => 'Ime'])}}
 		@if($errors->has('ime'))
 			<small id="passwordHelp" class="text-danger">{{ $errors->first('ime') }}</small> 
 		@endif
 	</div>
 	<div class="form-group @if($errors->has('prezime')) has-danger @endif">
 		{{Form::label('prezime', 'Prezime')}}
-		{{Form::text('prezime', '', ['class' => 'form-control', 'placeholder' => 'Prezime'])}}
+		{{Form::text('prezime', $profile->prezime, ['class' => 'form-control', 'placeholder' => 'Prezime'])}}
 		@if($errors->has('prezime'))
 			<small id="passwordHelp" class="text-danger">{{ $errors->first('prezime') }}</small> 
 		@endif
@@ -46,7 +46,7 @@
 
 	<div class="form-group @if($errors->has('smer')) has-danger @endif">
 		{{Form::label('smer', 'Smer')}}
-		{{Form::text('smer', '', ['class' => 'form-control', 'placeholder' => 'Smer'])}}
+		{{Form::text('smer', $profile->smer, ['class' => 'form-control', 'placeholder' => 'Smer'])}}
 		@if($errors->has('smer'))
 			<small id="passwordHelp" class="text-danger">{{ $errors->first('smer') }}</small> 
 		@endif
@@ -59,7 +59,7 @@
    			'Master studije' => 'Master studije',
 			'Doktorske studije' => 'Doktorske studije'
 			],
-			'Osnovne studije',
+			$profile->nivo_studija,
 			['class' => 'form-control', 'placeholder' => 'Nivo studija']
 		) }}
 		@if($errors->has('nivo_studija'))
@@ -69,7 +69,7 @@
 
 	<div class="form-group @if($errors->has('godina_diplomiranja')) has-danger @endif">
 		{{Form::label('godina_diplomiranja', 'Godina diplomiranja')}}
-		{{Form::selectYear('godina_diplomiranja', 1990, date('Y'), date('Y'), ['class' => 'form-control']) }}
+		{{Form::selectYear('godina_diplomiranja', $profile->godina_diplomiranja, date('Y'), date('Y'), ['class' => 'form-control']) }}
 		@if($errors->has('godina_diplomiranja'))
 			<small id="passwordHelp" class="text-danger">{{ $errors->first('godina_diplomiranja') }}</small> 
 		@endif
@@ -77,7 +77,7 @@
 
 	<div class="form-group @if($errors->has('naziv_firme')) has-danger @endif">
 		{{Form::label('naziv_firme', 'Naziv firme')}}
-		{{Form::text('naziv_firme', '', ['class' => 'form-control', 'placeholder' => 'Naziv firme'])}}
+		{{Form::text('naziv_firme', $profile->naziv_firme, ['class' => 'form-control', 'placeholder' => 'Naziv firme'])}}
 		@if($errors->has('naziv_firme'))
 			<small id="passwordHelp" class="text-danger">{{ $errors->first('naziv_firme') }}</small> 
 		@endif
@@ -85,7 +85,7 @@
 
 	<div class="form-group @if($errors->has('radno_mesto')) has-danger @endif">
 		{{Form::label('radno_mesto', 'Radno mesto')}}
-		{{Form::text('radno_mesto', '', ['class' => 'form-control', 'placeholder' => 'Radno mesto'])}}
+		{{Form::text('radno_mesto', $profile->radno_mesto, ['class' => 'form-control', 'placeholder' => 'Radno mesto'])}}
 		@if($errors->has('radno_mesto'))
 			<small id="passwordHelp" class="text-danger">{{ $errors->first('radno_mesto') }}</small> 
 		@endif
@@ -93,7 +93,7 @@
 
 	<div class="form-group @if($errors->has('biografija')) has-danger @endif">
 		{{Form::label('biografija', 'Biografija')}}
-		{{Form::textarea('biografija', '', ['class' => 'form-control', 'placeholder' => 'Biografija'])}}
+		{{Form::textarea('biografija', $profile->biografija, ['class' => 'form-control', 'placeholder' => 'Biografija'])}}
 		@if($errors->has('biografija'))
 			<small id="passwordHelp" class="text-danger">{{ $errors->first('biografija') }}</small> 
 		@endif
@@ -101,7 +101,7 @@
 
 	<div class="form-group">
 		{{Form::label('poruka', 'Poruka')}}
-		{{Form::textarea('poruka', '', ['class' => 'form-control', 'placeholder' => 'Poruka (Max 750 karaktera)', 'maxlength' => 750])}}
+		{{Form::textarea('poruka', $profile->poruka, ['class' => 'form-control', 'placeholder' => 'Poruka (Max 750 karaktera)', 'maxlength' => 750])}}
 	</div>
 
 		{{Form::submit('Submit', ['class' => 'btn btn-primary float-right'])}}

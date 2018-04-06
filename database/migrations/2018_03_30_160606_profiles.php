@@ -23,8 +23,8 @@ class Profiles extends Migration
             $table->string('smer', 65);
             $table->string('nivo_studija', 45);
             $table->year('godina_diplomiranja');
-            $table->string('naziv_firme', 250);
-            $table->string('radno_mesto', 250);
+            $table->string('naziv_firme', 250)->nullable();
+            $table->string('radno_mesto', 250)->nullable();
             $table->mediumText('biografija');
             $table->string('poruka', 550);
             $table->timestamps();
