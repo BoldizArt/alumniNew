@@ -1,0 +1,111 @@
+@-webkit-keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+  }
+
+  @-webkit-keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+  
+    to {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+  
+    to {
+      opacity: 0;
+    }
+  }
+  
+  .fadeOut {
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+  } 
+
+@keyframes navPaddingOff{
+    from {
+        padding: 24px 16px;
+    }
+    to {
+        padding: 5px 16px;
+    }
+}
+
+@keyframes navPaddingOff{
+    from {
+        padding: 24px 16px;
+    }
+    to {
+        padding: 5px 16px;
+    }
+}
+
+@-webkit-keyframes navPaddingOff{
+    from {
+        padding: 24px 16px;
+    }
+    to {
+        padding: 5px 16px;
+    }
+}
+
+.nav-off {
+    -webkit-animation-name: navPaddingOff;
+    animation-name: navPaddingOff;
+    -webkit-animation-duration: 680ms;
+    animation-duration: 680ms;
+    padding: 5px 16px;
+    background: $halfWhite;
+  } 
+
+@keyframes navPaddingOn{
+    from {
+        padding: 5px 16px;
+    }
+    to {
+        padding: 24px 16px;
+    }
+}
+
+@-webkit-keyframes navPaddingOn{
+    from {
+        padding: 5px 16px;
+    }
+    to {
+        padding: 24px 16px;
+    }
+}
+
+.nav-on {
+    -webkit-animation-name: navPaddingOn;
+    animation-name: navPaddingOn;
+    -webkit-animation-duration: 680ms;
+    animation-duration: 680ms;
+    padding: 24px 16px;
+} 

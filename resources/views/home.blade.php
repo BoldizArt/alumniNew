@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('slider')
   <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
@@ -20,14 +21,19 @@
         <span class="sr-only">Next</span>
     </a>
   </div>
-@section('content')
-  <div class="container">
-    <center>
-      <h4>{{$data['description']['title']}}</h4>
-      <p>{{$data['description']['text']}}</p>
-      <hr>
-    </center>
+@endsection
 
+ @section('content')
+
+    <div class="home-message">
+      <div class="-content container text-center">
+        <h4>{{$data['description']['title']}}</h4>
+        <p>{{$data['description']['text']}}</p>
+      </div>
+      <hr>
+    </div>
+
+  <div class="container">    
     <div class="row paddtb-32">
       @if(count($data) > 0)
      
@@ -41,7 +47,15 @@
                   </div>
                 </a>
               </div>
-              <a href="/profile/{{$profile->id}}"><h4 class="ime" id="velicina">{{$profile->ime}} {{$profile->prezime}}</h4></a>
+              <a href="/profile/{{$profile->id}}">
+                <h4 class="ime" id="velicina">{{$profile->ime}} 
+                @if(strlen($profile->ime . $profile->prezime) > 17)
+                  {{ substr($profile->prezime,0,1) }}.
+                @else
+                  {{$profile->prezime}}
+                @endif
+                </h4>
+              </a>
               <hr style="border-color: #131a21;">
               <h5>{{$profile->smer}}</h5>
             </center>
@@ -58,25 +72,40 @@
     <div class="container">
       <div class="row">
 
+<style>
+  .statistics-container .-icon{
+    color: #fff;
+    border: 4px solid #fff;
+    width: 68px;
+    height: 68px;
+    border-radius: 50px;
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  .statistics-container{
+    color: #fff;
+  }
+</style>
+
         <div class="col-sm-3 text-center">
-        <i class="fa fa-graduation-cap cw font-36" aria-hidden="true"></i>
-            <h2>{{$data['statistics']['all']}}</h2>
-            <p>Prijahljenih studenata</p>
+          <i class="-icon fas fa-users"></i>
+          <h2 class="statistic-count">{{$data['statistics']['all']}}</h2>
+          <p>Prijahljenih studenata</p>
         </div>
         <div class="col-sm-3 text-center">
-        <i class="fa fa-users cw font-36" aria-hidden="true"></i>
-            <h2>{{$data['statistics']['bsc']}}</h2>
-            <p>Diplomiranih inženjera</p>
+          <i class="-icon fas fa-user"></i>
+          <h2 class="statistic-count">{{$data['statistics']['bsc']}}</h2>
+          <p>Diplomiranih inženjera</p>
         </div>
         <div class="col-sm-3 text-center">
-        <i class="fa fa-user cw font-36" aria-hidden="true"></i>
-            <h2>{{$data['statistics']['msc']}}</h2>
-            <p>Master inženjera</p>
+          <i class="-icon fas fa-graduation-cap"></i>
+          <h2 class="statistic-count">{{$data['statistics']['msc']}}</h2>
+          <p>Master inženjera</p>
         </div>
         <div class="col-sm-3 text-center">
-        <i class="fa fa-user-circle-o cw font-36" aria-hidden="true"></i>
-            <h2>{{$data['statistics']['dr']}}</h2>
-            <p>Doktora nauke</p>
+          <i class="-icon fas fa-trophy"></i>
+          <h2 class="statistic-count">{{$data['statistics']['dr']}}</h2>
+          <p>Doktora nauke</p>
         </div>
 
       </div>

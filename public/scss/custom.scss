@@ -1,4 +1,22 @@
-$red: #dc3545;
+@charset "UTF-8";
+
+@import "components/_variables";
+@import "components/_basics";
+@import "components/_animations";
+@import "components/_menu";
+
+@import "components/_main-content";
+@import "components/_home-profiles";
+@import "components/_home-message";
+@import "components/_profile";
+@import "components/_profile-picture";
+
+@import "components/_alert";
+@import "components/_footer";
+
+
+
+
 
 html, body{
     margin: 0;

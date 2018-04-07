@@ -37,7 +37,7 @@
 			<h2 class="ime">{{ $profile->ime }} {{$profile->prezime}}</h2>
 		</div>
 		<div class="col-sm-6">
-			@if(Auth::user() AND !Auth::user()->role)
+			@if(Auth::user() AND Auth::user()->role)
 				@if($profile->komentare)
 					<div class="alert alert-dismissible alert-danger">
 						{{$profile->komentare}}

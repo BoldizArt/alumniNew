@@ -1,0 +1,24 @@
+.footer{
+    padding: 50px 25px;
+    background: $darkGrey;
+    color: $white;
+    position: relative;
+    a{
+        color: $lightGrey;
+    }
+    .up-to-top{
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        top: 45px;
+        right: 50px;
+        .-icon{
+           color: $lightGrey;
+           font-size: 35px;
+           &:hover{
+               color: $white;
+               cursor: pointer;
+           }
+        }
+    }
+}

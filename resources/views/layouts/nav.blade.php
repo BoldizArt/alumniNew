@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light navbar-alumni bg-light fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light navbar-alumni bg-light fixed-top nav-on">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Alumni') }}
@@ -11,16 +11,16 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
 
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Početna <span class="sr-only">(current)</span></a>
+                <li class="nav-item {{ (\Request::route()->getName() == 'home') ? 'active' : '' }}">
+                    <a class="nav-link" href="/">Početna</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ (\Request::route()->getName() == 'profile.index') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('profile.index') }}">Naši studenti</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ (\Request::route()->getName() == 'news') ? 'active' : '' }}">
                     <a class="nav-link" href="#">Događaji</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ (\Request::route()->getName() == 'contact') ? 'active' : '' }}">
                     <a class="nav-link" href="#">Kontakt</a>
                 </li>
 
@@ -39,14 +39,14 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                            <a class="dropdown-item" href="{{ route('profile.self') }}">{{ __('Moj profil') }}</a>
+                            <a class="dropdown-item" href="{{ route('profile.self') }}"><i class="fas fa-user"></i> {{ __('Moj profil') }}</a>
                             @if(Auth::user()->role)
-                                <a class="dropdown-item" href="{{ route('profile.index') }}">{{ __('Novi profili') }} (3)</a>
+                                <a class="dropdown-item" href="{{ route('profile.index') }}"><i class="fas fa-users"></i> {{ __('Novi profili') }} (3)</a>
                             @endif
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
-                                {{ __('Odjava') }}
+                                <i class="fas fa-sign-out-alt"></i> {{ __('Odjava') }}
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

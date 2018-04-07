@@ -45,6 +45,34 @@ class ProfileController extends Controller
         return view('profile.create')->with('title', $title);
     }
 
+    public function image(Request $request)
+    {
+        $input = $request->all();
+
+        $rules = [ 'slika' => 'mimes:jpeg,jpg,png|max:1999' ];
+
+        $messages =
+        [ 'mimes' => 'Dozvoljeni formati fajla su jpeg, jpg i png.' ];
+
+        $validator = Validator::make($input, $rules, $messages);  
+
+        if ($validator->fails()) {
+            return response()->json([ 'error' => $validator]);
+        }
+
+        // Upload image
+        $imageName = '';
+        $name = substr(md5(rand(5,10)),3,6);
+        if($request->hasFile('slika')){
+            $image = $request->file('slika');
+            $imageName = $name.'_'.time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $imageName);
+        }
+
+        return response()->json([ 'url' => $imageName ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -61,7 +89,6 @@ class ProfileController extends Controller
         [
             'ime' => 'required|string|min:3',
             'prezime' => 'required|string|min:3',
-            'slika' => 'mimes:jpeg,jpg,png|max:1999',
             'smer' => 'required',
             'nivo_studija' => 'required',
             'godina_diplomiranja' => 'required|date_format:Y|max:'.date('Y'),
@@ -72,7 +99,6 @@ class ProfileController extends Controller
         [
             'required' => 'Polje :attribute je obavezno!',
             'date_format' => 'Upišite samo godinu diplomiranja.',
-            'mimes' => 'Dozvoljeni formati fajla su jpeg, jpg i png.',
         ];
 
         $validator = Validator::make($input, $rules, $messages);        
@@ -83,38 +109,15 @@ class ProfileController extends Controller
                 ->withInput();
         }
 
-
-        if ($request->hasFile('input_img')) {
-            $image = $request->file('input_img');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $this->save();
-    
-            return back()->with('success','Image Upload successfully');
-        }
-
-        // Upload image
-        if($request->hasFile('slika')){
-            $image = $request->file('slika');
-            $imageName = $request->input('prezime').'_'.time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $imageName);
-        }
-        else
-        {
-            $imageName = 'profile.png';
-        }
-
         // Create / update profile
         $haveTemporaryProfile = $this->getTemporaryProfile();
 
-        $profile = ($haveTemporaryProfile) ? $haveTemporaryProfile : new TemporaryProfiles;
+        $profile = new TemporaryProfiles;
         $profile->uid = \Auth::user()->id; // rand(25, 120);
         $profile->langcode = 'sr';
         $profile->ime = ucwords($request->input('ime'));
         $profile->prezime = ucwords($request->input('prezime'));
-        ($haveTemporaryProfile) ? '' : $profile->slika = $imageName;
+        $profile->slika = $request->input('slika');
         $profile->smer = $request->input('smer');
         $profile->nivo_studija = $request->input('nivo_studija');
         $profile->godina_diplomiranja = $request->input('godina_diplomiranja');
@@ -175,7 +178,7 @@ class ProfileController extends Controller
         }
 
         // If isset the profile, return view
-        return view('profile.create')->with(['profile' => $profile, 'title' => 'Izmeni profil']);
+        return view('profile.edit')->with(['profile' => $profile, 'title' => 'Izmeni profil']);
     }
 
     /**
@@ -188,8 +191,55 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         // /profile/{id} [PUT]
-        $data = 'Update profile';
-        return view('profile.update')->with('data', $data);
+       // /profile [POST]
+
+       $input = $request->all();
+
+       $rules =
+       [
+           'ime' => 'required|string|min:3',
+           'prezime' => 'required|string|min:3',
+           'smer' => 'required',
+           'nivo_studija' => 'required',
+           'godina_diplomiranja' => 'required|date_format:Y|max:'.date('Y'),
+           'biografija' => 'required'
+       ];
+
+       $messages =
+       [
+           'required' => 'Polje :attribute je obavezno!',
+           'date_format' => 'Upišite samo godinu diplomiranja.',
+       ];
+
+       $validator = Validator::make($input, $rules, $messages);        
+
+       if ($validator->fails()) {
+           return redirect('profile/me/edit')
+               ->withErrors($validator)
+               ->withInput();
+       }
+
+       // Get current user id
+       $uid = \Auth::user()->id;
+       // Create / update profile
+       $haveTemporaryProfile = $this->getTemporaryProfile();
+
+       $profile = $haveTemporaryProfile;
+       $profile->uid = $uid;
+       $profile->langcode = 'sr';
+       $profile->ime = ucwords($request->input('ime'));
+       $profile->prezime = ucwords($request->input('prezime'));
+       (!empty($request->input('slika'))) ? $profile->slika = $request->input('slika'): '';
+       $profile->smer = $request->input('smer');
+       $profile->nivo_studija = $request->input('nivo_studija');
+       $profile->godina_diplomiranja = $request->input('godina_diplomiranja');
+       $profile->naziv_firme = empty($request->input('naziv_firme')) ? '/' : $request->input('naziv_firme');
+       $profile->radno_mesto = empty($request->input('radno_mesto')) ? '/' : $request->input('radno_mesto');
+       $profile->biografija = $request->input('biografija');
+       $profile->poruka = empty($request->input('poruka')) ? '' : $request->input('poruka');
+       $profile->save();
+
+       return redirect('/profile/me/show')->with('success', 'Uspešno ste ažurirali vaš profil. Čim admin prihvati biće vidljiv i ostalima.');
     }
 
     /**

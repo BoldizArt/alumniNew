@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'Home\HomeController@index');
+Route::get('/', 'Home\HomeController@index')->name('home');
 
 Auth::routes();
 
@@ -30,3 +30,9 @@ Route::post('/profile/me/update', 'Profile\ProfileController@update')->name('pro
 
 Route::post('/search', 'Search\SearchController@get')->name('profile.search');
 Route::get('/search', 'Search\SearchController@index')->name('search.form');
+
+Route::get('/ajax/image', function(){
+    return view('profile.self');
+});
+Route::post('/profile/image', 'Profile\ProfileController@image')->name('profile.image');
+
