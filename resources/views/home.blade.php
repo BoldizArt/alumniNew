@@ -42,8 +42,8 @@
             <center>
               <div class="cont">
                 <a href="/profile/{{$profile->id}}">
-                  <div class="profile-container">
-                    <img src="images/{{$profile->slika}}" alt="{{$profile->ime}} {{$profile->prezime}}" class="locked profile-image">
+                  <div class="_img-box">
+                    <img src="images/{{$profile->slika}}" alt="{{$profile->ime}} {{$profile->prezime}}" class="_locked _img">
                   </div>
                 </a>
               </div>
@@ -85,6 +85,7 @@
   .statistics-container{
     color: #fff;
   }
+  
 </style>
 
         <div class="col-sm-3 text-center">
@@ -111,16 +112,50 @@
       </div>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <div class="container">
-    <ol>
-      @foreach($data['messages'] as $message)
-        <li><a href="/profile/{{$message->id}}"> {{ $message->ime }} {{ $message->prezime }}</a> - {{$message->poruka}}</li>
-      @endforeach
-    <ol>
-   </div>
+
+    <div id="carouselContent" class="carousel slide fluid-container msg-container" data-ride="carousel">
+      <div class="carousel-inner" role="listbox">
+          @php($i = 1)
+          @foreach($data['messages'] as $message)
+            <div class="carousel-item {{ ($i== 1)?'active':'' }} p-4">
+              <div class="row msg-body">
+                <div class="col-md-4 text-md-right text-center">
+                  <a href="/profile/{{$message->id}}">
+                    <div class="_img-box">
+                      <img class="_img msg-image" src="/images/{{$message->slika}}" alt="{{ $message->ime }} {{ $message->prezime }}">
+                    </div>
+                  </a>
+                </div>
+                <div class="-msg col-md-8 text-md-left text-center">
+                  <div class="-text">
+                    <p class="text-justify">
+                      <i class="fas fa-quote-left"></i>
+                        <i>{{$message->poruka}}</i>
+                      <i class="fas fa-quote-right"></i>
+                    </p>
+                    <p class="text-left" >
+                      <i class="fas fa-angle-double-right"></i>
+                      <a href="/profile/{{$message->id}}"> {{ $message->ime }} {{ $message->prezime }}</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            @php($i++)
+          @endforeach
+      </div>
+      <a class="carousel-control-prev" href="#carouselContent" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true">
+            <i class="msg-btn fas fa-angle-left"></i>
+          </span>
+          <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselContent" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true">
+            <i class="msg-btn fas fa-angle-right"></i>
+          </span>
+          <span class="sr-only">Next</span>
+      </a>
+    </div>
 
 @endsection

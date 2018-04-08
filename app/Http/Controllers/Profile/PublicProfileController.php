@@ -15,8 +15,9 @@ class PublicProfileController extends Controller
     public function index()
     {
         // /profile
+        $title = 'Naši studenti';
         $data = Profile::orderBy('ime', 'asc')->paginate(10);
-        return view('profile.index')->with('data', $data);
+        return view('profile.index')->with(['data' => $data, 'title' => $title]);
     }
 
     /**

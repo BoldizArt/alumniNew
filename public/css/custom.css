@@ -1,3 +1,25 @@
+._img-box {
+  max-width: 220px;
+  margin: 10px auto;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+._img-box ._img {
+  min-width: 220px;
+  width: 100%;
+  height: auto;
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+._img-box ._img:hover {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
 @-webkit-keyframes fadeIn {
   from {
     opacity: 0;
@@ -110,6 +132,62 @@
   padding-bottom: 45px;
 }
 
+.msg-container {
+  min-height: 240px;
+}
+@media (max-width: 992px) {
+  .msg-container {
+    min-height: 480px;
+  }
+}
+.msg-container .msg-body {
+  min-height: 240px;
+}
+@media (max-width: 992px) {
+  .msg-container .msg-body {
+    min-height: 260px;
+  }
+}
+.msg-container .msg-body ._img-box {
+  float: right;
+}
+@media (max-width: 992px) {
+  .msg-container .msg-body ._img-box {
+    float: none;
+    margin: 0 auto 25px auto;
+  }
+}
+@media (min-width: 992px) {
+  .msg-container .-msg {
+    border-left: 1px solid lightgrey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+.msg-container .-msg .-text {
+  width: 80%;
+}
+@media (max-width: 992px) {
+  .msg-container .-msg .-text {
+    margin: auto;
+  }
+}
+.msg-container .msg-btn {
+  color: #000;
+  font-size: 35px;
+}
+
+.show-profile .admin-comment-form {
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.075);
+  margin-bottom: 25px;
+}
+.show-profile ._img-box {
+  width: 80%;
+  max-width: 80%;
+}
+
 .footer {
   padding: 50px 25px;
   background: #4d4d4d;
@@ -169,28 +247,6 @@ html, body {
 
 h2, h3, h4, h5, h6 {
   text-transform: none;
-}
-
-.profile-container {
-  width: 75%;
-  margin: 10px auto;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
-}
-.profile-container .profile-image {
-  width: 100%;
-  height: auto;
-  border-radius: 50%;
-  -webkit-transition: all 1s ease;
-  transition: all 1s ease;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-.profile-container .profile-image:hover {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
 }
 
 .statistics-container {

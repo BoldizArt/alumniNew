@@ -2,9 +2,10 @@
 
 @section('content')
 <div class="container show-profile">
-	@if(Auth::user() AND Auth::user()->role)
-		{!! Form::open(['action' => 'Search\SearchController@get', 'method' => 'POST', 'id' => 'searchForm']) !!}
-			<div style="padding: 25px ; background: rgba(0,0,0,0.075); margin-bottom: 25px;" class="row">
+	@if(Auth::user() AND Auth::user()->role AND \Request::route()->getName() == 'temporary.profile')
+		{!! Form::open(['action' => 'Profile\ProfileController@acceptProfile', 'method' => 'POST', 'id' => 'acceptForm']) !!}
+		{{Form::hidden('pid', $profile->id)}}	
+		<div class="row admin-comment-form">
 				<div class="col-sm-6">
 					<div class="form-group">
 						{{Form::label('komentare', 'Dodaj komentar')}}
@@ -37,7 +38,7 @@
 			<h2 class="ime">{{ $profile->ime }} {{$profile->prezime}}</h2>
 		</div>
 		<div class="col-sm-6">
-			@if(Auth::user() AND Auth::user()->role)
+			@if(Auth::user())
 				@if($profile->komentare)
 					<div class="alert alert-dismissible alert-danger">
 						{{$profile->komentare}}
@@ -49,9 +50,9 @@
 	<hr>
 		<div class="row paddb-32">
 				<div class="col-sm-4">
-				<center>
-					<img src="/images/{{$profile->slika}}" alt="{{ $profile->ime }} {{$profile->prezime}}" class="locked profile-image">
-				</center>
+				<div class="_img-box">
+					<img src="/images/{{$profile->slika}}" alt="{{ $profile->ime }} {{$profile->prezime}}" class="_locked _img">
+				</div>
 				</div>
 				<br>
 				<div class="col-sm-8">
@@ -106,7 +107,7 @@
 			<div class="paddb-32 citat">
 			<h5>Poruka</h5>
 				<blockquote>
-					<p>{{ $profile->poruka }}</p>
+					<p class="text-justify">{{ $profile->poruka }}</p>
 				</blockquote>
 			</div>
 		@endif

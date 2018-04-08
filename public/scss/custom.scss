@@ -2,6 +2,7 @@
 
 @import "components/_variables";
 @import "components/_basics";
+@import "components/_components";
 @import "components/_animations";
 @import "components/_menu";
 
@@ -64,27 +65,7 @@ h2, h3, h4, h5, h6{
     text-transform: none;
 }
 
-.profile-container{
-    width: 75%;
-    margin: 10px auto;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-    border-radius: 50%;
-    .profile-image{
-        width: 100%;
-        height: auto;
-        border-radius: 50%;
-        -webkit-transition: all 1s ease;
-        transition: all 1s ease;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        &:hover{
-            -webkit-transform: scale(1.1);
-            transform: scale(1.1);
-        }
-    }
-}
+
 
 .statistics-container{
     background: rgba(0,0,0,0.25);

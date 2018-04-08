@@ -4,3 +4,42 @@
         padding-bottom: 45px;
     }
 }
+
+.msg-container{
+    min-height: 240px;
+    @media (max-width: $md){
+        min-height: 480px;
+    }
+    .msg-body{
+        min-height: 240px;
+        @media (max-width: $md){
+            min-height: 260px;
+        }
+        ._img-box{
+            float: right;
+            @media (max-width: $md){
+                float: none;
+                margin: 0 auto 25px auto;
+            }
+        }
+    }
+    .-msg{
+        @media (min-width: $md){
+            border-left: 1px solid $lightGrey;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .-text{
+            width: 80%;
+            @media (max-width: $md){
+                margin: auto;
+            }
+        }
+    }
+    .msg-btn{
+        color: #000;
+        font-size: 35px;
+    }
+}
+

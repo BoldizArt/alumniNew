@@ -4,18 +4,20 @@
 
 	<div class="container profiles-container">
 		<div class="row">
-			<div class="col-sm-6"><h2 style="color: black">Naši studenti</h2></div>
+			<div class="col-sm-6"><h2 style="color: black">{{$title}}</h2></div>
 			<div class="col-sm-6">
-				{!! Form::open(['action' => 'Search\SearchController@get', 'method' => 'POST', 'id' => 'searchForm']) !!}
-				<div class="form-group">
-					<div class="input-group mb-3">
-						{{Form::text('keywords', '', ['class' => 'form-control', 'placeholder' => 'Pretraga', 'id' => 'keyWords'])}}
-						<div class="input-group-append">
-							{{Form::submit('Pretraga', ['class' => 'btn btn-primary float-right'])}}
+				@if(\Request::route()->getName() == 'profile.index')
+					{!! Form::open(['action' => 'Search\SearchController@get', 'method' => 'POST', 'id' => 'searchForm']) !!}
+					<div class="form-group">
+						<div class="input-group mb-3">
+							{{Form::text('keywords', '', ['class' => 'form-control', 'placeholder' => 'Pretraga', 'id' => 'keyWords'])}}
+							<div class="input-group-append">
+								{{Form::submit('Pretraga', ['class' => 'btn btn-primary float-right'])}}
+							</div>
 						</div>
 					</div>
-				</div>
-				{!! Form::close() !!}
+					{!! Form::close() !!}
+				@endif
 			</div>
 		</div>
 		

@@ -1,3 +1,21 @@
-._image{
+._img-box{
+    max-width: 220px;
+    margin: 10px auto;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
     border-radius: 50%;
+    ._img{
+        min-width: 220px;
+        width: 100%;
+        height: auto;
+        -webkit-transition: all 1s ease;
+        transition: all 1s ease;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        &:hover{
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+    }
 }

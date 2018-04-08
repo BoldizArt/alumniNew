@@ -117,7 +117,7 @@ class ProfileController extends Controller
         $profile->langcode = 'sr';
         $profile->ime = ucwords($request->input('ime'));
         $profile->prezime = ucwords($request->input('prezime'));
-        $profile->slika = $request->input('slika');
+        (!empty($request->input('slika'))) ? $profile->slika = $request->input('slika'): '';
         $profile->smer = $request->input('smer');
         $profile->nivo_studija = $request->input('nivo_studija');
         $profile->godina_diplomiranja = $request->input('godina_diplomiranja');
@@ -272,4 +272,78 @@ class ProfileController extends Controller
         return (count($profile) < 1) ? false : $profile;
     }
 
+    public function acceptProfile(Request $request)
+    {
+        $pid = $request->input('pid');
+        $temporarayProfile = TemporaryProfiles::find($pid);
+
+        if($request->input('status') == 'active')
+        {
+            $profile = new Profile;
+            $profile->uid =                 $temporarayProfile->uid;
+            $profile->langcode =            $temporarayProfile->langcode;
+            $profile->ime =                 $temporarayProfile->ime;
+            $profile->prezime =             $temporarayProfile->prezime;
+            $profile->slika =               $temporarayProfile->slika;
+            $profile->smer =                $temporarayProfile->smer;
+            $profile->nivo_studija =        $temporarayProfile->nivo_studija;
+            $profile->godina_diplomiranja = $temporarayProfile->godina_diplomiranja;
+            $profile->naziv_firme =         $temporarayProfile->naziv_firme;
+            $profile->radno_mesto =         $temporarayProfile->radno_mesto;
+            $profile->biografija =          $temporarayProfile->biografija;
+            $profile->poruka =              $temporarayProfile->poruka;
+            $profile->save();
+            
+            $temporarayProfile->delete();
+            return redirect('/temporary/profiles')->with('success', 'Ovaj profile je sada aktivan.');
+        }
+        else
+        {
+            $temporarayProfile->status = input('status');
+            $temporarayProfile->komentare = input('komentare');
+
+            return back()->with('success', 'Profil je ažuriran.');
+        }
+        
+    }
+
+    public function TemporaryProfiles()
+    {
+        if(\Auth::user()->role)
+        {
+            // /temporary/profile
+            $title = 'Novi studenti';
+            $data = TemporaryProfiles::whereNotIn('status', ['blocked'])->orderBy('ime', 'asc')->paginate(10);
+            return view('profile.temporary')->with(['data' => $data, 'title' => $title]);
+        }
+        return redirect('/');
+
+    }
+
+    public function TemporaryProfile($id)
+    {
+        $profile = TemporaryProfiles::find($id);
+        if(count($profile) < 1){
+            return redirect()->back()->withErrors(['msg' => 'Can not find this user.']);
+        }
+        return view('profile.show')->with('profile', $profile);
+    }
+
+
 }
+
+
+/*
+
+Temporary to profile controler
+Add profiles
+Show news
+Add news
+Contact
+Old alumni
+Footer
+show team
+Add team
+Delete profile
+
+*/

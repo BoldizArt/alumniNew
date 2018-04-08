@@ -121,7 +121,7 @@
 
 				<div class="form-group @if($errors->has('godina_diplomiranja')) has-danger @endif">
 					{{Form::label('godina_diplomiranja', 'Godina diplomiranja')}}
-					{{Form::selectYear('godina_diplomiranja', $profile->godina_diplomiranja, date('Y'), date('Y'), ['class' => 'form-control']) }}
+					{{Form::selectYear('godina_diplomiranja', 1950, date('Y'),$profile->godina_diplomiranja, ['class' => 'form-control']) }}
 					@if($errors->has('godina_diplomiranja'))
 						<small id="passwordHelp" class="text-danger">{{ $errors->first('godina_diplomiranja') }}</small> 
 					@endif
