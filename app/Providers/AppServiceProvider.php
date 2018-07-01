@@ -3,6 +3,7 @@
 namespace Alumni\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Alumni\Http\Controllers\Profile\AdminController;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,9 +12,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(AdminController $admin)
     {
-        //
+        // Share new profiles count with views.
+        $count = $admin->newUsers();
+        \View::share('newProfiles', $count);
     }
 
     /**

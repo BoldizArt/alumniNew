@@ -17,7 +17,7 @@ class RoleMiddleware
     public function handle($request, Closure $next)
     {
         if (auth()->check() && $request->user()->role == 0) {
-            return redirect('/home');
+            return redirect()->route('home');
         }
 
         return $next($request);

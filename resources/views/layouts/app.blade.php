@@ -25,7 +25,8 @@
         <div class="main-content">
             @yield('content')
             @extends('inc.messages')
-            @extends('layouts.image-modal')
+            @extends('modals.protectedimage')
+            @extends('modals.question')
         </div>
     </main>
 

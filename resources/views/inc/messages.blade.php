@@ -45,11 +45,22 @@
     @endif
 
     @if (session('status'))
-        <div class="-card card text-white bg-info mb-3">
+        <div class="-card card text-white bg-dark mb-3">
             <span class="-close close">x</span>
             <div class="card-body">
                 <h5 class="card-title">Status</h5>
                 <p class="card-text">{{session('status')}}</p>
+            </div>
+        </div>
+    @endif
+
+
+    @if (session('info'))
+        <div class="-card card text-white bg-info mb-3">
+            <span class="-close close">x</span>
+            <div class="card-body">
+                <h5 class="card-title">Informacija</h5>
+                <p class="card-text">{{session('info')}}</p>
             </div>
         </div>
     @endif

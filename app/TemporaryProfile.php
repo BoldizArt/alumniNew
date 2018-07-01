@@ -4,7 +4,7 @@ namespace Alumni;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TemporaryProfiles extends Model
+class TemporaryProfile extends Model
 {
     // Table name
     protected $table = 'temporary_profiles';

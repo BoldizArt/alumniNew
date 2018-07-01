@@ -17,12 +17,13 @@ class SearchController extends Controller
     {
         // Get keywords from search form
         $string = $request->get('keywords');
-
+        $category = $request->get('category');
+        
         // split on 1+ whitespace & ignore empty (eg. trailing space)
         $keywords = preg_split('/\s+/', $string, -1, PREG_SPLIT_NO_EMPTY); 
         
        // Get data from get function
-        $response = $this->search($keywords);
+        $response = $this->search($keywords, $category);
         
         // Return the response with view in json format
         // return response()->json($response);
@@ -31,20 +32,32 @@ class SearchController extends Controller
         ]);
     }
     
-    private function search(array $keywords)
+    private function search(array $keywords, $category)
     {
+        // Set data for query.
+        $data = [
+            'keywords' => $keywords,
+            'category' => $category
+        ];
         $profile = Profile::query() // select('ime', 'prezime', 'id')
-            ->where(function ($q) use ($keywords)
+            ->where(function ($q) use ($data)
             {
-                foreach ($keywords as $word)
+                foreach ($data['keywords'] as $word)
                 {
-                    if(strlen($word) > 2)
-                    {
-                        $q->orWhere('ime', 'like', "%{$word}%")
-                        ->orWhere('prezime', 'like', "%{$word}%");
+                    if (strlen($word) > 2) {
+                        if ($data['category'] == 'smer') {
+                            $q->orWhere('smer', 'like', "%{$word}%");
+                        } elseif ($data['category'] == 'naziv_firme') {
+                            $q->orWhere('naziv_firme', 'like', "%{$word}%");
+                        } elseif ($data['category'] == 'godina_diplomiranja') {
+                            $q->orWhere('godina_diplomiranja', 'like', "%{$word}%");
+                        }  else {
+                            $q->orWhere('ime', 'like', "%{$word}%")
+                            ->orWhere('prezime', 'like', "%{$word}%");
+                        }
                     }
                 }
-            })->limit(10)->orderBy('ime', 'asc')->paginate(10);
+            })->orderBy('ime', 'asc')->paginate(10);
 
         return $profile;
     }

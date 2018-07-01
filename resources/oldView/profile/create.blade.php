@@ -63,7 +63,7 @@
 <div class="col-sm-3">
 
 	<label for="slika">Profilna slika</label>
-	{!! Form::open(['action' => 'Profile\ProfileController@image', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'ajaxImageForm']) !!}
+	{!! Form::open(['action' => 'Actions\ActionsController@saveImage', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'ajaxImageForm']) !!}
 		
 		<div class="image-box">
 			<img id="ajaxImage" class="-image" src="/images/profile.png" alt="Profile picture">
@@ -84,7 +84,7 @@
 
 		
 
-	{!! Form::open(['action' => 'Profile\ProfileController@store', 'method' => 'POST']) !!}
+	{!! Form::open(['route' => 'profile.store', 'method' => 'POST']) !!}
 
 		{{Form::hidden('slika', 'profile.png', ["class" => "profile-picture-name"])}}
 	

@@ -14,14 +14,14 @@
                 <li class="nav-item {{ (\Request::route()->getName() == 'home') ? 'active' : '' }}">
                     <a class="nav-link" href="/">Početna</a>
                 </li>
-                <li class="nav-item {{ (\Request::route()->getName() == 'profile.index') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('profile.index') }}">Naši studenti</a>
+                <li class="nav-item {{ (\Request::route()->getName() == 'public.index') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('public.index') }}">Naši studenti</a>
                 </li>
-                <li class="nav-item {{ (\Request::route()->getName() == 'news') ? 'active' : '' }}">
-                    <a class="nav-link" href="#">Događaji</a>
+                <li class="nav-item {{ (\Request::route()->getName() == 'public.news') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('public.news') }}">Događaji</a>
                 </li>
-                <li class="nav-item {{ (\Request::route()->getName() == 'contact') ? 'active' : '' }}">
-                    <a class="nav-link" href="#">Kontakt</a>
+                <li class="nav-item {{ (\Request::route()->getName() == 'public.contact') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('public.contact') }}">Kontakt</a>
                 </li>
 
             </ul>
@@ -39,13 +39,16 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                            <a class="dropdown-item" href="{{ route('profile.self') }}"><i class="fas fa-user"></i> {{ __('Moj profil') }}</a>
+                            <a class="dropdown-item" href="{{ route('user.show') }}"><i class="fas fa-user"></i> {{ __('Moj profil') }}</a>
                             @if(Auth::user()->role)
-                                <a class="dropdown-item" href="{{ route('profile.index') }}">
+                                <a class="dropdown-item" href="{{ route('admin.news') }}">
                                     <i class="fas fa-user-plus"></i> {{ __('Dodaj profil') }}
                                 </a>
-                                <a class="dropdown-item" href="{{ route('temporary.profiles') }}">
+                                <a class="dropdown-item" href="{{ route('admin.index') }}">
                                     <i class="fas fa-users"></i> {{ __('Novi profili') }}
+                                    @if($newProfiles)
+                                        <span class="badge badge-pill badge-dark">{{ $newProfiles }}</span>
+                                    @endif
                                 </a>
                             @endif
                             <a class="dropdown-item" href="{{ route('logout') }}"

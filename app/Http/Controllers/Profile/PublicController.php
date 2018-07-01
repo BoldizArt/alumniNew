@@ -1,11 +1,12 @@
 <?php
+
 namespace Alumni\Http\Controllers\Profile;
 
 use Alumni\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Alumni\Profile;
 
-class PublicProfileController extends Controller
+class PublicController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,9 @@ class PublicProfileController extends Controller
     public function index()
     {
         // /profile
-        $title = 'Naši studenti';
+        $title = __('Naši studenti');
         $data = Profile::orderBy('ime', 'asc')->paginate(10);
-        return view('profile.index')->with(['data' => $data, 'title' => $title]);
+        return view('public.index')->with(['data' => $data, 'title' => $title]);
     }
 
     /**
@@ -32,6 +33,27 @@ class PublicProfileController extends Controller
         if(count($profile) < 1){
             return redirect()->back()->withErrors(['msg' => 'Can not find this user.']);
         }
-        return view('profile.show')->with('profile', $profile);
+        return view('public.show')->with('profile', $profile);
     }
+
+    /**
+     * Display a contact form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function news()
+    {
+        return view('public.news')->with('title', 'Događaji');
+    }
+
+    /**
+     * Display the news.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function contact()
+    {
+        return view('public.contact')->with('title', 'Kontakt form');
+    }
+
 }

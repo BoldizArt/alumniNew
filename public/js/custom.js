@@ -80,15 +80,18 @@ $(document).ready(function()
     }
 
     // Search function
-    function get(KEY_WORDS){
+    var replaced = false;
+    var page = 1;
+    function get(KEYWORDS, CATEGORY){
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
-            url: '/search',
+            url: '/search?page='+page,
             type: 'POST',
-            data: {_token: CSRF_TOKEN, keywords: KEY_WORDS},
+            data: {_token: CSRF_TOKEN, keywords: KEYWORDS, category: CATEGORY},
             dataType: 'JSON',
             success: function (response) {
                 // console.info(response.result);
+                replaced = true;
                 replace(response);
             }
         });
@@ -97,22 +100,48 @@ $(document).ready(function()
     // On form submit function
     $(document).on('submit','#searchForm',function(event){
         event.preventDefault();
-        var KEY_WORDS = $('#keyWords').val();
-        get(KEY_WORDS);
+        var KEYWORDS = $('#keywords').val();
+        var CATEGORY = $('#searchCategory').val();
+        get(KEYWORDS, CATEGORY);
     });
 
     // On keydovn function
-    $(document).on('input','#keyWords',function(event){
-        var KEY_WORDS = $('#keyWords').val();
-        if(KEY_WORDS.length > 2)
+    $(document).on('input','#keywords',function(event){
+        var KEYWORDS = $('#keywords').val();
+        var CATEGORY = $('#searchCategory').val();  
+        if(KEYWORDS.length > 2)
         {
-            get(KEY_WORDS);
+            get(KEYWORDS, CATEGORY);
         }
-        else if(KEY_WORDS.length < 1)
+        else if(KEYWORDS.length < 1)
         {
-            get(' ');
+            get(' ', ' ');
         }
     });
+
+    // On select chane
+    $(document).on('change','#searchCategory',function(event){
+        var KEYWORDS = $('#keywords').val();
+        var CATEGORY = $('#searchCategory').val();      
+        if(KEYWORDS.length > 2)
+        {
+            get(KEYWORDS, CATEGORY);
+        }
+    });
+
+    // On pager click
+    $(document).on('click', '.page-item:not(.active) .page-link', function(event){
+        var KEYWORDS = $('#keywords').val();
+        var CATEGORY = $('#searchCategory').val();
+        var href = $(this).attr('href');
+        if(RegExp('\\bsearch\\b').test(href)) {
+            event.preventDefault();
+            var hrefArray = href.split('=');
+            page = hrefArray[1];
+            get(KEYWORDS, CATEGORY);
+        }
+
+    })
     // SEARCH END
 
 
@@ -125,6 +154,13 @@ $(document).ready(function()
 
 
     // IMAGE UPLOAD
+    // Check after validation if an image is set. If isset url, change the profile image.
+    var existsUrl = $('.profile-picture-name').val();
+
+    if (typeof(existsUrl) != 'undefined' && existsUrl != '') {
+        $('#ajaxImage').attr('src', '/images/'+existsUrl);
+    }
+
     // On image click, user can upload a picture
     $(document).on('click', '#ajaxImageUpload', function(e){
         $('#ajaxImageInput').click();
@@ -181,6 +217,41 @@ $(document).ready(function()
                     scrollTop:0
                 }, 540, 'swing'
             );
+    });
+
+    var modal = '#questionModal';
+
+    // On no or close click, does not delete the profile, and close the modal
+    $(modal+' .-no').click(function(){
+        $(modal).hide();
+        return false;
+    });
+
+    // Reaction on profile delete button click
+    var submit = false;
+    $(document).on('submit', '#profile-delete-form', function(e){
+       
+        if(!submit) {
+            e.preventDefault();
+            $(modal+' .question').text('Da li ste sigurni da želite da obrišete profil?');
+            $(modal).show();
+
+            // On yes click delete the profile and close the modal
+            $(modal+' .-yes').click(function(){
+                submit = true;
+                $(modal).hide();
+                $('#profile-delete-form').submit();
+                return true;
+            });
+        }
+    });
+
+    // Reaction on right click on image
+    $('img').contextmenu(function(){
+        $(modal+' .-yes').hide();
+        $(modal+' .question').text('Nemate dozvolu da skinete ovu sliku!');
+        $(modal).show();
+        return false;
     });
 
 });
