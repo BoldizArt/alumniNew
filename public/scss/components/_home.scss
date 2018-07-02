@@ -1,0 +1,25 @@
+.statistics-container{
+    color: $white;
+    background: rgba(0,0,0,0.25);
+    padding: 45px 0 25px 0;
+    .-icon{
+        color: $white;
+        border: 4px solid $white;
+        width: 68px;
+        height: 68px;
+        border-radius: 50px;
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    .statistic-count{
+        color: $white;
+    }
+}
+
+.profiles-container{
+    .profile-image{
+        width: 65px;
+        height: auto;
+        border-radius: 50%;
+    }
+}

@@ -16,7 +16,7 @@ class TemporaryProfileUpdate extends Migration
         Schema::table('temporary_profiles', function (Blueprint $table)
         {
             $table->string('status', 12)->default('created');
-            $table->string('komentare', 550)->default('Vaš profil još nije aktivan, čeka se na odobrenje.');
+            $table->string('komentar', 550)->default('Vaš profil još nije aktivan, čeka se na odobrenje.');
         });
     }
 
@@ -30,7 +30,7 @@ class TemporaryProfileUpdate extends Migration
         Schema::table('temporary_profiles', function (Blueprint $table)
         {
             $table->dropColumn('status');
-            $table->dropColumn('komentare');
+            $table->dropColumn('komentar');
         });
     }
 }

@@ -8,4 +8,20 @@
         width: 80%;
         max-width: 80%;
     }
+    .profile-image{
+        border-radius: 50%;
+        width: 90%;
+    }
+    .-info{
+        tr{
+            &:last-child{
+                &:hover{
+                    background: none;
+                }
+            }
+        }
+        td{ 
+            padding: 15px 25px;
+        }
+    }
 }

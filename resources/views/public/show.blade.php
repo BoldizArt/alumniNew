@@ -2,14 +2,14 @@
 
 @section('content')
 <div class="container show-profile">
-	@if(Auth::user() AND Auth::user()->role AND \Request::route()->getName() == 'temporary.profile')
-		{!! Form::open(['action' => 'Profile\ProfileController@acceptProfile', 'method' => 'POST', 'id' => 'acceptForm']) !!}
+	@if(Auth::user() AND Auth::user()->role == 1 AND \Request::route()->getName() == 'admin.show')
+		{!! Form::open(['action' => 'Profile\AdminController@accept', 'method' => 'POST', 'id' => 'acceptForm']) !!}
 		{{Form::hidden('pid', $profile->id)}}	
 		<div class="row admin-comment-form">
 				<div class="col-sm-6">
 					<div class="form-group">
-						{{Form::label('komentare', 'Dodaj komentar')}}
-						{{ Form::textarea('komentare', $profile->komentare, ['class' => 'form-control', 'placeholder' => 'Dodaj komentar', 'rows' => '6']) }}
+						{{Form::label('komentar', 'Dodaj komentar')}}
+						{{ Form::textarea('komentar', $profile->komentare, ['class' => 'form-control', 'placeholder' => 'Dodaj komentar', 'rows' => '6']) }}
 					</div>
 				</div>
 				<div class="col-sm-6">
@@ -35,7 +35,11 @@
 	@endif
 	<div class="row">
 		<div class="col-sm-6">
-			<h2 class="ime">{{ $profile->ime }} {{$profile->prezime}}</h2>
+			<h2 class="ime">{{ $profile->ime }} {{$profile->prezime}} 
+				@if($profile->profile_type !== 'student' AND !empty($profile->profile_type))
+					<small> ({{ $profile->profile_type }})</small>
+				@endif
+			</h2>
 		</div>
 		<div class="col-sm-6">
 			@if(Auth::user())
@@ -79,10 +83,14 @@
 							<td>{{ $profile->radno_mesto }}</td>
 						</tr>
 						@if(!Auth::guest())
-							@if(Auth::user()->id == $profile->uid)
+							@if(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->author)
 								<tr>
-									<td style="font-weight: bold; color: grey;">Izmeni profil</td>
-									<td><a btn class="btn btn-success" href="/profile/me/edit">Izmeni</a></td>
+									<td><a btn class="btn btn-success" href="{{route('user.edit')}}">Izmeni</a></td>
+									<td>
+										{!! Form::open(['route' => ['user.destroy'], 'method' => 'DELETE', 'id' => 'profile-delete-form']) !!}
+											{{Form::submit('Obriši', ['class' => 'btn btn-danger', 'id' => 'profile-delete-submit'])}}
+										{!! Form::close() !!}
+									</td>
 								</tr>
 							@else
 								<tr>

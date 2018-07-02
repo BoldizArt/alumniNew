@@ -23,7 +23,7 @@ class ActionsController extends Controller
     {
         $tProfile = $this->isTemporaryProfileExists($uid);
         $profile = $this->isProfileExists($uid);
-        return ($profile || $tProfile) ? TRUE : FALSE;
+        return ($profile || $tProfile) ? true : false;
     }
 
     /**
@@ -55,7 +55,7 @@ class ActionsController extends Controller
     public function isProfileExists($uid)
     {
         $profile = Profile::where('uid', $uid)->count();
-        return ($profile > 0) ? TRUE : FALSE;
+        return ($profile > 0) ? true : false;
     }
 
     /**
@@ -67,7 +67,7 @@ class ActionsController extends Controller
     public function isTemporaryProfileExists($uid)
     {
         $profile = TemporaryProfile::where('uid', $uid)->count();
-        return ($profile > 0) ? TRUE : FALSE;
+        return ($profile > 0) ? true : false;
     }
 
     /**
@@ -80,7 +80,7 @@ class ActionsController extends Controller
     {
         $profile = ($this->isProfileExists($uid)) ?
             Profile::where('uid', $uid)
-                ->first() : FALSE;
+                ->first() : false;
         
         return $profile;
     }

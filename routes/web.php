@@ -40,9 +40,10 @@ Route::delete('/profile/me/destroy', 'Profile\UserController@destroy')->name('us
 #### Admin pages
 Route::get('/temporary/profiles', 'Profile\AdminController@index')->name('admin.index');
 Route::get('/temporary/profile/{profile}', 'Profile\AdminController@show')->where('profile', '[A-Za-z0-9]+')->name('admin.show');
-Route::get('/news/create', 'Profile\AdminController@index')->name('admin.news');
-// Route::get('/create/profile', 'Profile\AdminController@create')->name('create.profile');
+Route::get('/temporary/profiles/create', 'Profile\AdminController@create')->name('admin.create');
+Route::post('/temporary/profiles', 'Profile\AdminController@store')->name('admin.store');
 // Route::get('/edit/profile', 'Profile\AdminController@edit')->name('edit.profile');
 // Route::post('/update/profile/me', 'Profile\AdminController@update')->name('update.profile');
 // Route::delete('/destroy/profile/me', 'Profile\AdminController@destroy')->name('destroy.profile');
-
+Route::post('/temporary/profiles/accept', 'Profile\AdminController@accept')->name('admin.accept');
+Route::get('/news/create', 'Profile\AdminController@index')->name('admin.news');

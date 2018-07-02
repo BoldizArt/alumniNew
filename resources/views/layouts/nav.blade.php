@@ -11,9 +11,6 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
 
-                <li class="nav-item {{ (\Request::route()->getName() == 'home') ? 'active' : '' }}">
-                    <a class="nav-link" href="/">Početna</a>
-                </li>
                 <li class="nav-item {{ (\Request::route()->getName() == 'public.index') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('public.index') }}">Naši studenti</a>
                 </li>
@@ -41,7 +38,7 @@
 
                             <a class="dropdown-item" href="{{ route('user.show') }}"><i class="fas fa-user"></i> {{ __('Moj profil') }}</a>
                             @if(Auth::user()->role)
-                                <a class="dropdown-item" href="{{ route('admin.news') }}">
+                                <a class="dropdown-item" href="{{ route('admin.create') }}">
                                     <i class="fas fa-user-plus"></i> {{ __('Dodaj profil') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('admin.index') }}">

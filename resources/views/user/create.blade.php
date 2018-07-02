@@ -1,57 +1,6 @@
 @extends('layouts.app')
 
 
-<style>
-	.image-box {
-	  position: relative;
-	  margin-bottom: 25px;
-	}
-	
-	.-image {
-		width: 100%; 
-		border-radius: 50%;
-	}
-	.-alert{
-		border: 1px solid red;
-	}
-	
-	.-overlay {
-	  position: absolute;
-	  cursor: pointer;
-	  border-radius: 50%;
-	  top: 0;
-	  bottom: 0;
-	  left: 0;
-	  right: 0;
-	  height: 100%;
-	  width: 100%;
-	  opacity: 0;
-	  transition: .5s ease;
-	  background-color: #008CBA;
-	}
-	
-	.image-box:hover .-overlay {
-	  opacity: 0.75;
-	}
-	
-	.-text {
-	  color: white;
-	  font-size: 20px;
-	  position: absolute;
-	  top: 50%;
-	  left: 50%;
-	  transform: translate(-50%, -50%);
-	  -ms-transform: translate(-50%, -50%);
-	  text-align: center;
-	}
-	.-upload{
-		font-size: 50px;
-	}
-	.hidden{
-		display: none;
-	}
-	</style>
-
 @section('content')
 <div class="container">
 
@@ -83,11 +32,34 @@
 <div class="col-sm-9">
 
 		
-
-	{!! Form::open(['route' => 'user.store', 'method' => 'POST']) !!}
-
+	@if(\Request::route()->getName() == 'admin.create')
+		{!! Form::open(['route' => 'admin.store', 'method' => 'POST']) !!}
+	@else
+		{!! Form::open(['route' => 'user.store', 'method' => 'POST']) !!}
+	@endif
+	
 		{{Form::hidden('slika', 'profile.png', ["class" => "profile-picture-name"])}}
 	
+		@if(Auth::user() AND (Auth::user()->role == 1 OR Auth::user()->id == 1))
+			<div class="form-group @if($errors->has('tip_profila')) has-danger @endif">
+				{{Form::label('tip_profila', 'Tip profila')}}
+				{{ Form::select('student', [
+					'student' => 'Student',
+					'programer' => 'Alumni programer',
+					'koordinator' => 'Alumni koordinator',
+					'mentor' => 'Alumni mentor'
+					],
+					'',
+					['class' => 'form-control', 'placeholder' => 'Tip profila']
+				) }}
+				@if($errors->has('tip_profila'))
+					<small id="passwordHelp" class="text-danger">{{ $errors->first('tip_profila') }}</small> 
+				@endif
+			</div>
+
+			{{Form::hidden('author', Auth::user()->id)}}
+		@endif
+
 		<div class="form-group @if($errors->has('ime')) has-danger @endif">
 			{{Form::label('ime', 'Ime')}}
 			{{Form::text('ime', '', ['class' => 'form-control', 'placeholder' => 'Ime'])}}

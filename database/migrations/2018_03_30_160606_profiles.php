@@ -15,7 +15,7 @@ class Profiles extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
-            $table->smallInteger('uid')->unique();
+            $table->smallInteger('uid')->nullable()->default(0);
             $table->string('langcode', 12);
             $table->string('ime', 45);
             $table->string('prezime', 45);

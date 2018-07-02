@@ -6,24 +6,45 @@ use Alumni\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Validator;
-
-// Models
+use Auth;
 use Alumni\Profile;
 use Alumni\TemporaryProfile;
-
 // use Alumni\Team;
 use Alumni\Http\Controllers\Actions\ActionsController;
 
 class UserController extends Controller
 {
     /**
+     * Variables
+     */
+    protected $action;
+    protected $temporary;
+    protected $profile;
+    protected $auth;
+    protected $user;
+
+    /**
      * Call the auth middleweare on start.
+     * Innject dependency classes.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ActionsController $action, TemporaryProfile $temporary, Profile $profile, Auth $auth)
     {
         $this->middleware('auth');
+
+        // Set classes
+        $this->action = $action;
+        $this->temporary = $temporary;
+        $this->profile = $profile;
+        $this->auth = $auth;
+
+        // Get current user id and set in $uid variable.
+        $this->middleware(function ($request, $next) {
+            $this->user = $this->auth::user();
+
+            return $next($request);
+        });
     }
 
     /**
@@ -34,11 +55,10 @@ class UserController extends Controller
     public function create()
     {
         // Get the current users id
-        $uid = \Auth::user()->id;
+        $uid = $this->user->id;
 
         // Check if profile is exists
-        $ac = new ActionsController;
-        $profile = $ac->exists($uid);
+        $profile = $this->action->exists($uid);
 
         // If not exists profile for this user, redirect it to show profile
         if($profile)
@@ -66,8 +86,7 @@ class UserController extends Controller
         $input = $request->all();
 
         // Validate request
-        $ac = new ActionsController;
-        $validator = $ac->validateUser($input);
+        $validator = $this->action->validateUser($input);
 
         if ($validator->fails()) {
             return redirect('profile/me/create')
@@ -75,8 +94,8 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        $profile = new TemporaryProfile;
-        $profile->uid = \Auth::user()->id;
+        $profile = $this->temporary;
+        $profile->uid = $this->user->id;
         $profile->langcode = 'sr';
         $profile->ime = ucwords($request->input('ime'));
         $profile->prezime = ucwords($request->input('prezime'));
@@ -101,15 +120,12 @@ class UserController extends Controller
     public function show()
     {
         // Get current users id 
-        $uid = \Auth::user()->id;
-
-        // Get profile
-        $ac = new ActionsController;
+        $uid = $this->user->id;
 
          // If isset the profile, return view
-         if($profile = $ac->get($uid))
+         if($profile = $this->action->get($uid))
         {
-            return view('user.show')
+            return view('public.show')
                 ->with('profile', $profile);
         }
         
@@ -128,16 +144,12 @@ class UserController extends Controller
     public function edit()
     {
         // Get current users id 
-        $uid = \Auth::user()->id;
+        $uid = $this->user->id;
 
-        // Get profile
-        $ac = new ActionsController;
-
-         // If isset the profile, return view
-         
-         if($profile = $ac->get($uid))
+        // If isset the profile, return view
+        if($profile = $this->action->get($uid))
         {
-            $title = 'Izmeni profil';
+            $title = __('Izmeni profil');
             return view('user.edit')->with(['profile' => $profile, 'title' => $title]);
         }
 
@@ -160,8 +172,7 @@ class UserController extends Controller
         $input = $request->all();
 
         // Validate request
-        $ac = new ActionsController;
-        $validator = $ac->validateUser($input);
+        $validator = $this->action->validateUser($input);
 
         if ($validator->fails())
         {
@@ -171,16 +182,13 @@ class UserController extends Controller
         }
 
         // Get the current users id
-        $uid = \Auth::user()->id;
+        $uid = $this->user->id;
 
-        // Get profile
-        if($ac->isTemporaryProfileExists($uid))
-        {
-            $profile = $ac->getTemporaryProfile($uid);
-        }
-        else
-        {
-            $profile = new TemporaryProfile;
+        // Get temporary profile or create new temporary profile.
+        if($this->action->isTemporaryProfileExists($uid)) {
+            $profile = $this->action->getTemporaryProfile($uid);
+        } else {
+            $profile = $this->temporary;
         }
 
         $profile->uid = $uid;
@@ -209,14 +217,11 @@ class UserController extends Controller
      */
     public function destroy()
     {
-
         // Get current users id 
-        $uid = \Auth::user()->id;
+        $uid = $this->user->id;
 
         // Get profile
-        $ac = new ActionsController;
-
-        $profile = $ac->getTemporaryProfile($uid);
+        $profile = $this->action->getTemporaryProfile($uid);
         $profile->delete();
 
         return redirect('/')->with('status', 'Obrisali ste vaš profil.');

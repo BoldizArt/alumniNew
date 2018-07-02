@@ -8,6 +8,16 @@ use Alumni\Profile;
 
 class PublicController extends Controller
 {
+    protected $profile;
+
+    /**
+     * Dependency innjection with constructor method.
+     */
+    public function __construct(Profile $profile)
+    {
+        $this->profile = $profile;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +27,10 @@ class PublicController extends Controller
     {
         // /profile
         $title = __('Naši studenti');
-        $data = Profile::orderBy('ime', 'asc')->paginate(10);
+        $data = $this->profile::where('profile_type', 'student')
+        ->orderBy('ime', 'asc')
+        ->paginate(10);
+        
         return view('public.index')->with(['data' => $data, 'title' => $title]);
     }
 
@@ -29,11 +42,13 @@ class PublicController extends Controller
      */
     public function show($id)
     {
-        $profile = Profile::find($id);
-        if(count($profile) < 1){
+        $profiles = $this->profile::find($id);
+
+        if(count($profiles) < 1){
             return redirect()->back()->withErrors(['msg' => 'Can not find this user.']);
         }
-        return view('public.show')->with('profile', $profile);
+
+        return view('public.show')->with('profile', $profiles);
     }
 
     /**
@@ -43,7 +58,9 @@ class PublicController extends Controller
      */
     public function news()
     {
-        return view('public.news')->with('title', 'Događaji');
+        $title = __('Događaji');
+
+        return view('public.news')->with('title', $title);
     }
 
     /**
@@ -53,7 +70,9 @@ class PublicController extends Controller
      */
     public function contact()
     {
-        return view('public.contact')->with('title', 'Kontakt form');
+        $title = __('Kontaktirajte nas');
+
+        return view('public.contact')->with('title', $title);
     }
 
 }

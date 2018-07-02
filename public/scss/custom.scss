@@ -7,41 +7,20 @@
 @import "components/_menu";
 
 @import "components/_main-content";
+@import "components/_home";
 @import "components/_home-profiles";
 @import "components/_home-message";
+@import "components/_create-profile";
 @import "components/_profile";
 @import "components/_profile-picture";
 
 @import "components/_alert";
 @import "components/_footer";
 
-
-
-
-
 html, body{
     margin: 0;
     padding: 0;
     height: 100%;   
-}
-
-.show-profile{
-    .profile-image{
-        border-radius: 50%;
-        width: 90%;
-    }
-    .-info{
-        tr{
-            &:last-child{
-                &:hover{
-                    background: none;
-                }
-            }
-        }
-        td{ 
-            padding: 15px 25px;
-        }
-    }
 }
 
 .card-alert{
@@ -63,21 +42,6 @@ html, body{
 
 h2, h3, h4, h5, h6{
     text-transform: none;
-}
-
-
-
-.statistics-container{
-    background: rgba(0,0,0,0.25);
-    padding: 45px 0 25px 0;
-}
-
-.profiles-container{
-    .profile-image{
-        width: 65px;
-        height: auto;
-        border-radius: 50%;
-    }
 }
 
 .pagination{

@@ -72,22 +72,22 @@
     <div class="container">
       <div class="row">
 
-<style>
-  .statistics-container .-icon{
-    color: #fff;
-    border: 4px solid #fff;
-    width: 68px;
-    height: 68px;
-    border-radius: 50px;
-    padding: 12px;
-    margin-bottom: 15px;
-  }
-  .statistics-container{
-    color: #fff;
-  }
-  
-</style>
-
+          <style>
+              .statistics-container .-icon{
+                color: #fff;
+                border: 4px solid #fff;
+                width: 68px;
+                height: 68px;
+                border-radius: 50px;
+                padding: 12px;
+                margin-bottom: 15px;
+              }
+              .statistics-container{
+                color: #fff;
+              }
+              
+            </style>
+            
         <div class="col-sm-3 text-center">
           <i class="-icon fas fa-users"></i>
           <h2 class="statistic-count">{{$data['statistics']['all']}}</h2>

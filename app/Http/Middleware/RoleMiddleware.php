@@ -16,7 +16,8 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() && $request->user()->role == 0) {
+        // Redirect all user witouth admin (1) role;
+        if (auth()->check() && $request->user()->role !== 1) {
             return redirect()->route('home');
         }
 
