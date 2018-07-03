@@ -79,7 +79,7 @@
 
 				{!! Form::open(['route' => ['user.update'], 'method' => 'POST']) !!}
 
-				{{Form::hidden('slika', '', ["class" => "profile-picture-name"])}}
+				{{Form::hidden('slika', $profile->slika, ["class" => "profile-picture-name"])}}
 				
 				<div class="form-group @if($errors->has('ime')) has-danger @endif">
 					{{Form::label('ime', 'Ime')}}

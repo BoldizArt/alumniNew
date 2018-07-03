@@ -66,7 +66,23 @@ class AdminController extends Controller
             ->orderBy('ime', 'asc')
             ->paginate(10);
 
-        return view('admin.index')->with(['data' => $data, 'title' => $title]);
+        return view('public.index')->with(['data' => $data, 'title' => $title]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function created()
+    {
+        // /profile
+        $title = __('Profili koje ste vi kreirali');
+        $data = $this->profile::where('autor', $this->user->id)
+            ->orderBy('ime', 'asc')
+            ->paginate(10);
+
+        return view('public.index')->with(['data' => $data, 'title' => $title]);
     }
 
     /**
@@ -119,9 +135,9 @@ class AdminController extends Controller
             $profile->status = $status;
             $profile->save();
 
-            if ($status == 'active') {                
+            if ($status == 'active') {
                 if ($profile) $save = $this->save($profile);
-                if ($save) $delete = $this->delete($pid);
+                if ($save) $delete = $this->deleteTemporary($pid);
             }
 
             // send mail
@@ -152,7 +168,21 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+        $all = $request->all();
+        $msg = 'Došlo je do greške, pokušajte kasnije.';
+
+        // Create an object from the array.
+        $data = json_decode(json_encode($all), FALSE);
+        $data->uid = 0;
+
+        // Save this resource
+        $save = $this->save($data);
+        if ($save) {
+            $msg = 'Kreirali ste profil.';
+            return redirect()->route('admin.created')->with('success', $msg);
+        }
+
+        return redirect()->back()->with('alert', $msg);
     }
 
 
@@ -165,10 +195,14 @@ class AdminController extends Controller
     public function save($data)
     {
         // If not isset author id use uid for it.
-        $author = ($data->author) ? $data->author : $data->uid;
+        $autor = ($data->autor) ? $data->autor : $data->uid;
+        
+        // Get profile or create new profile.
+        $saved = false;
+        if ($data->uid == 0 || !$profile = $this->action->getProfile($data->uid)) $profile = $this->profile;
+        $tipProfila = ($data->tip_profila) ? $data->tip_profila : 'student';
 
         // Set profile
-        $profile = $this->profile;
         $profile->uid = $data->uid;
         $profile->langcode = 'sr';
         $profile->ime = ucwords($data->ime);
@@ -181,7 +215,8 @@ class AdminController extends Controller
         $profile->radno_mesto = empty($data->radno_mesto) ? '/' : $data->radno_mesto;
         $profile->biografija = $data->biografija;
         $profile->poruka = empty($data->poruka) ? '' : $data->poruka;
-        $profile->author = $author;
+        $profile->autor = $autor;
+        $profile->tip_profila = $tipProfila;
         
         // Save profile
         $saved = $profile->save();
@@ -200,11 +235,30 @@ class AdminController extends Controller
     /**
      * Delete profile
      */
-    public function delete($pid)
+    public function deleteTemporary($pid)
     {
         // delete temporary profile where profile id = $pid
-        $profile = $this->temporary::find($pid);
-        $delete = $profile->delete();
+        $delete = false;
+        if ($profile = $this->temporary::find($pid)) {
+            $delete = $profile->delete();
+        }
+
+        return ($delete) ? true : false;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($pid)
+    {
+        // delete profile where profile id = $pid
+        $delete = false;
+        if ($profile = $this->profile::find($pid)) {
+            $delete = $profile->delete();
+        }
 
         return ($delete) ? true : false;
     }

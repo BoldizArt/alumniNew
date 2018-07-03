@@ -34,16 +34,11 @@
 		
 	@if(\Request::route()->getName() == 'admin.create')
 		{!! Form::open(['route' => 'admin.store', 'method' => 'POST']) !!}
-	@else
-		{!! Form::open(['route' => 'user.store', 'method' => 'POST']) !!}
-	@endif
-	
-		{{Form::hidden('slika', 'profile.png', ["class" => "profile-picture-name"])}}
 	
 		@if(Auth::user() AND (Auth::user()->role == 1 OR Auth::user()->id == 1))
 			<div class="form-group @if($errors->has('tip_profila')) has-danger @endif">
 				{{Form::label('tip_profila', 'Tip profila')}}
-				{{ Form::select('student', [
+				{{ Form::select('tip_profila', [
 					'student' => 'Student',
 					'programer' => 'Alumni programer',
 					'koordinator' => 'Alumni koordinator',
@@ -57,8 +52,14 @@
 				@endif
 			</div>
 
-			{{Form::hidden('author', Auth::user()->id)}}
+			{{Form::hidden('autor', Auth::user()->id)}}
 		@endif
+
+	@else
+		{!! Form::open(['route' => 'user.store', 'method' => 'POST']) !!}
+	@endif
+
+		{{Form::hidden('slika', 'profile.png', ["class" => "profile-picture-name"])}}
 
 		<div class="form-group @if($errors->has('ime')) has-danger @endif">
 			{{Form::label('ime', 'Ime')}}

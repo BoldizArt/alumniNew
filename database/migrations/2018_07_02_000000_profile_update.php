@@ -15,8 +15,8 @@ class ProfileUpdate extends Migration
     {
         Schema::table('profiles', function (Blueprint $table)
         {
-            $table->string('profile_type', 12)->default('student');
-            $table->smallInteger('author')->nullable()->default(0);
+            $table->string('tip_profila', 12)->default('student');
+            $table->smallInteger('autor')->nullable()->default(0);
         });
     }
 
@@ -29,8 +29,8 @@ class ProfileUpdate extends Migration
     {
         Schema::table('profiles', function (Blueprint $table)
         {
-            $table->dropColumn('profile_type');
-            $table->dropColumn('author');
+            $table->dropColumn('tip_profila');
+            $table->dropColumn('autor');
         });
     }
 }

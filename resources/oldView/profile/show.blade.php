@@ -8,8 +8,8 @@
 		<div class="row admin-comment-form">
 				<div class="col-sm-6">
 					<div class="form-group">
-						{{Form::label('komentare', 'Dodaj komentar')}}
-						{{ Form::textarea('komentare', $profile->komentare, ['class' => 'form-control', 'placeholder' => 'Dodaj komentar', 'rows' => '6']) }}
+						{{Form::label('komentar', 'Dodaj komentar')}}
+						{{ Form::textarea('komentar', $profile->komentar, ['class' => 'form-control', 'placeholder' => 'Dodaj komentar', 'rows' => '6']) }}
 					</div>
 				</div>
 				<div class="col-sm-6">
@@ -39,9 +39,9 @@
 		</div>
 		<div class="col-sm-6">
 			@if(Auth::user())
-				@if($profile->komentare)
+				@if($profile->komentar)
 					<div class="alert alert-dismissible alert-danger">
-						{{$profile->komentare}}
+						{{$profile->komentar}}
 					</div>
 				@endif
 			@endif

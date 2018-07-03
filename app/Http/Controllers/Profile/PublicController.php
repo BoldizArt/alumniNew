@@ -27,7 +27,7 @@ class PublicController extends Controller
     {
         // /profile
         $title = __('Naši studenti');
-        $data = $this->profile::where('profile_type', 'student')
+        $data = $this->profile::where('tip_profila', 'student')
         ->orderBy('ime', 'asc')
         ->paginate(10);
         
@@ -42,7 +42,7 @@ class PublicController extends Controller
      */
     public function show($id)
     {
-        $profiles = $this->profile::find($id);
+        $profiles = $this->profile::where('tip_profila', 'student')->find($id);
 
         if(count($profiles) < 1){
             return redirect()->back()->withErrors(['msg' => 'Can not find this user.']);
@@ -73,6 +73,47 @@ class PublicController extends Controller
         $title = __('Kontaktirajte nas');
 
         return view('public.contact')->with('title', $title);
+    }
+
+    /**
+     * Display team members.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function team()
+    {
+        $title = 'Alumni tim';
+        $all =  $this->profile::whereNotIn('tip_profila', ['student'])
+            ->orderBy('ime', 'asc')
+            ->get();
+
+        // Sort team members by profile type. 
+        $teamArray = [];
+        foreach ($all as $key => $value) {
+            $teamArray[$value->tip_profila][] = $value;
+        }
+
+        // Create object from array.
+        $team = json_decode(json_encode($teamArray), FALSE);
+
+        return view('public.team')->with(['team' => $team, 'title' => $title]);
+    }
+
+    /**
+     * Show team member by id.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function teamMember($id)
+    {
+        $member = $this->profile::whereNotIn('tip_profila', ['student'])->find($id);
+
+        if(count($member) < 1){
+            return redirect()->back()->withErrors(['msg' => 'Ne možemo da nađemo ovaj korisnik.']);
+        }
+
+        return $member;//view('public.show')->with('profile', $member);
     }
 
 }

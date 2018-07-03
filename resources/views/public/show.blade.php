@@ -9,7 +9,7 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						{{Form::label('komentar', 'Dodaj komentar')}}
-						{{ Form::textarea('komentar', $profile->komentare, ['class' => 'form-control', 'placeholder' => 'Dodaj komentar', 'rows' => '6']) }}
+						{{ Form::textarea('komentar', $profile->komentar, ['class' => 'form-control', 'placeholder' => 'Dodaj komentar', 'rows' => '6']) }}
 					</div>
 				</div>
 				<div class="col-sm-6">
@@ -36,16 +36,21 @@
 	<div class="row">
 		<div class="col-sm-6">
 			<h2 class="ime">{{ $profile->ime }} {{$profile->prezime}} 
-				@if($profile->profile_type !== 'student' AND !empty($profile->profile_type))
-					<small> ({{ $profile->profile_type }})</small>
+				@if($profile->tip_profila !== 'student' AND !empty($profile->tip_profila))
+					<small> ({{ $profile->tip_profila }})</small>
 				@endif
 			</h2>
 		</div>
 		<div class="col-sm-6">
 			@if(Auth::user())
-				@if($profile->komentare)
+				@if($profile->komentar)
 					<div class="alert alert-dismissible alert-danger">
-						{{$profile->komentare}}
+						{{$profile->komentar}}
+					</div> 
+				@endif
+				@if(Auth::user()->id == $profile->autor)
+					<div class="alert alert-dismissible alert-success">
+						Profil  je aktivan.
 					</div>
 				@endif
 			@endif
@@ -83,7 +88,7 @@
 							<td>{{ $profile->radno_mesto }}</td>
 						</tr>
 						@if(!Auth::guest())
-							@if(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->author)
+							@if(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->autor)
 								<tr>
 									<td><a btn class="btn btn-success" href="{{route('user.edit')}}">Izmeni</a></td>
 									<td>

@@ -1,60 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
-
-	<div class="container profiles-container">
+	<div class="container show-profile">
 		<div class="row">
-			<div class="col-sm-6"><h2 style="color: black">{{$title}}</h2></div>
 			<div class="col-sm-6">
-				@if(\Request::route()->getName() == 'profile.index')
-					{!! Form::open(['action' => 'Search\SearchController@get', 'method' => 'POST', 'id' => 'searchForm']) !!}
-					<div class="form-group">
-						<div class="input-group mb-3">
-							{{Form::text('keywords', '', ['class' => 'form-control', 'placeholder' => 'Pretraga', 'id' => 'keyWords'])}}
-							<div class="input-group-append">
-								{{Form::submit('Pretraga', ['class' => 'btn btn-primary float-right'])}}
-							</div>
-						</div>
-					</div>
-					{!! Form::close() !!}
-				@endif
+				<h2 class="-title">{{ $title }}<h2>
 			</div>
 		</div>
-		
-		<div id="replaceProfiles">
-			@if(count($data) > 0)
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th></th>
-							<th>Prezime i Ime</th>
-							<th class="mobile-hide">Smer</th>
-							<th>Datum dipl.</th>
-							<th class="mobile-hide">Naziv firme</th>
-						</tr>
-					</thead>
-					<tbody id="tableBody">
-							@foreach($data as $profile)
-								
-									<tr>
-										<td><center><a href="/profile/{{$profile->id}}"><img class="locked profile-image" src="/images/{{$profile->slika}}" alt="{{$profile->ime}} {{$profile->prezime}}"></a></center></td>
-										<td class="ime"><a href="/profile/{{$profile->id}}">{{$profile->ime}} {{$profile->prezime}}</a></td>
-										<td class="mobile-hide">{{$profile->smer}}</td>
-										<td>{{$profile->godina_diplomiranja}}</td>
-										<td class="mobile-hide">{{$profile->naziv_firme}}</td>
-									</tr>
-								
-							@endforeach
-					</tbody>
-				</table>
-			@else
-				<p>Nijedan student nije pronađen</p>
-			@endif
-			<div class="pagination">{{$data->links()}}</div>
-		</div>
+		<hr>
+
+
+
+		@foreach ($team as $type => $members)
+			<div class="container">    
+				<div class="row paddtb-32">
+					<div class="col-sm-12 text-center">
+						<h4 class="team-type">Alumni {{ $type }}i</h4>
+					</div>
+					@foreach ($members as $member)
+						<div class="col-sm-3 pocetna_studenti">
+						<center>
+							<div class="cont">
+							<a href="/team/{{$member->id}}">
+								<div class="_img-box">
+								<img src="images/{{$member->slika}}" alt="{{$member->ime}} {{$member->prezime}}" class="_locked _img">
+								</div>
+							</a>
+							</div>
+							<a href="/team/{{$member->id}}">
+							<h4 class="ime" id="velicina">{{$member->ime}} 
+							@if(strlen($member->ime . $member->prezime) > 17)
+								{{ substr($member->prezime,0,1) }}.
+							@else
+								{{$member->prezime}}
+							@endif
+							</h4>
+							</a>
+							<hr style="border-color: #131a21;">
+							<h5>{{$member->smer}}</h5>
+						</center>
+						</div>
+					@endforeach
+				</div>
+			</div>
+		@endforeach
++
 	</div>
 
-@endsection
-
-@section('footer')
 @endsection

@@ -23,6 +23,7 @@ class ActionsController extends Controller
     {
         $tProfile = $this->isTemporaryProfileExists($uid);
         $profile = $this->isProfileExists($uid);
+
         return ($profile || $tProfile) ? true : false;
     }
 
@@ -34,16 +35,35 @@ class ActionsController extends Controller
      */
     public function get($uid)
     {
-        if($this->isTemporaryProfileExists($uid))
-        {
+        $profile = false;
+        if($this->isTemporaryProfileExists($uid)) {
             $profile = $this->getTemporaryProfile($uid);
-        }
-        else
-        {
+        } elseif ($this->isProfileExists($uid)) {
             $profile = $this->getProfile($uid);
         }
 
         return $profile;
+    }
+
+    /**
+     * Delete all type of profile for $uid.
+     *
+     * @param  int $uid
+     * @return boolean
+     */
+    public function delete($uid)
+    {
+        $deleted = 0;
+        while ($profile = $this->getTemporaryProfile($uid)) {
+            $profile->delete();
+            $deleted++;
+        }
+        while ($profile = $this->getProfile($uid)) {
+            $profile->delete();
+            $deleted++;
+        }
+
+        return $deleted;
     }
 
     /**

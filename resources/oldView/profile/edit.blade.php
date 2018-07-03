@@ -62,7 +62,7 @@
 				{!! Form::open(['action' => 'Actions\ActionsController@saveImage', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'ajaxImageForm']) !!}
 					
 					<div class="image-box">
-						<img id="ajaxImage" class="-image" src="/images/{{$profile->slika}}" alt="Profile picture">
+						<img id="ajaxImage" class="-image" src="/images/{{ $profile->slika }}" alt="Profile picture">
 						<div id="ajaxImageUpload" class="-overlay">
 							<div class="-text">Postavi profilnu sliku</div>
 						</div>
@@ -79,7 +79,7 @@
 
 				{!! Form::open(['route' => 'profile.update', 'method' => 'POST']) !!}
 
-				{{Form::hidden('slika', '', ["class" => "profile-picture-name"])}}
+				{{Form::hidden('slika', $profile->slika, ["class" => "profile-picture-name"])}}
 				
 				<div class="form-group @if($errors->has('ime')) has-danger @endif">
 					{{Form::label('ime', 'Ime')}}

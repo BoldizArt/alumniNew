@@ -47,6 +47,12 @@
                                         <span class="badge badge-pill badge-dark">{{ $newProfiles }}</span>
                                     @endif
                                 </a>
+                                <a class="dropdown-item" href="{{ route('admin.created') }}">
+                                    <i class="fas fa-users"></i> {{ __('Kreirani profili') }}
+                                    @if($newProfiles)
+                                        <span class="badge badge-pill badge-dark">{{ $newProfiles }}</span>
+                                    @endif
+                                </a>
                             @endif
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();

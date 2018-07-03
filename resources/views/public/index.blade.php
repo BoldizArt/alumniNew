@@ -2,7 +2,7 @@
 
 @section('content')
 
-	<div class="container profiles-container">
+<div class="container profiles-container">
 		<div class="row">
 			<div class="col-md-6"><h2 style="color: black">{{$title}}</h2></div>
 			<div class="col-md-6">
@@ -42,17 +42,26 @@
 						</tr>
 					</thead>
 					<tbody id="tableBody">
-							@foreach($data as $profile)
-								
-									<tr>
-										<td><center><a href="/profile/{{$profile->id}}"><img class="locked profile-image" src="/images/{{$profile->slika}}" alt="{{$profile->ime}} {{$profile->prezime}}"></a></center></td>
-										<td class="ime"><a href="/profile/{{$profile->id}}">{{$profile->ime}} {{$profile->prezime}}</a></td>
-										<td class="mobile-hide">{{$profile->smer}}</td>
-										<td>{{$profile->godina_diplomiranja}}</td>
-										<td class="mobile-hide">{{$profile->naziv_firme}}</td>
-									</tr>
-								
-							@endforeach
+						@foreach($data as $profile)
+
+							@if($profile->tip_profila)
+								@if($profile->tip_profila !== 'student')
+									@php($url = '/team/')
+								@else
+									@php ($url = '/profile/')
+								@endif
+							@else
+								@php ($url = '/temporary/profile/')
+							@endif
+							
+							<tr>
+								<td><center><a href="{{ $url }}{{ $profile->id }}"><img class="locked profile-image" src="/images/{{ $profile->slika }}" alt="{{$profile->ime}} {{$profile->prezime}}"></a></center></td>
+								<td class="ime"><a href="{{ $url }}{{ $profile->id }}">{{ $profile->ime }} {{ $profile->prezime }}</a></td>
+								<td class="mobile-hide">{{ $profile->smer }} ({{ $profile->tip_profila }})</td>
+								<td>{{ $profile->godina_diplomiranja }}</td>
+								<td class="mobile-hide">{{ $profile->naziv_firme }}</td>
+							</tr>
+						@endforeach
 					</tbody>
 				</table>
 			@else

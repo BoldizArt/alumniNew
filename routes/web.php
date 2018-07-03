@@ -26,8 +26,10 @@ Route::post('/search', 'Search\SearchController@get')->name('ajax.search');
 #### Public pages
 Route::get('/profiles', 'Profile\PublicController@index')->name('public.index');
 Route::get('/profile/{profile}', 'Profile\PublicController@show')->where('profile', '[A-Za-z0-9]+')->name('public.show');
-Route::get('/dogadjaji', 'Profile\PublicController@news')->name('public.news');
-Route::get('/kontakt', 'Profile\PublicController@contact')->name('public.contact');
+Route::get('/news', 'Profile\PublicController@news')->name('public.news');
+Route::get('/contact', 'Profile\PublicController@contact')->name('public.contact');
+Route::get('/team', 'Profile\PublicController@team')->name('public.team');
+Route::get('/team/{team}', 'Profile\PublicController@teamMember')->where('team', '[A-Za-z0-9]+')->name('public.team.member');
 
 #### User pages
 Route::get('/profile/me/create', 'Profile\UserController@create')->name('user.create');
@@ -42,6 +44,7 @@ Route::get('/temporary/profiles', 'Profile\AdminController@index')->name('admin.
 Route::get('/temporary/profile/{profile}', 'Profile\AdminController@show')->where('profile', '[A-Za-z0-9]+')->name('admin.show');
 Route::get('/temporary/profiles/create', 'Profile\AdminController@create')->name('admin.create');
 Route::post('/temporary/profiles', 'Profile\AdminController@store')->name('admin.store');
+Route::get('/temporary/profiles/created', 'Profile\AdminController@created')->name('admin.created');
 // Route::get('/edit/profile', 'Profile\AdminController@edit')->name('edit.profile');
 // Route::post('/update/profile/me', 'Profile\AdminController@update')->name('update.profile');
 // Route::delete('/destroy/profile/me', 'Profile\AdminController@destroy')->name('destroy.profile');

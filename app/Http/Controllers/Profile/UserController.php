@@ -99,7 +99,7 @@ class UserController extends Controller
         $profile->langcode = 'sr';
         $profile->ime = ucwords($request->input('ime'));
         $profile->prezime = ucwords($request->input('prezime'));
-        (!empty($request->input('slika'))) ? $profile->slika = $request->input('slika'): 'profile.png';
+        $profile->slika = (!empty($request->input('slika'))) ? $request->input('slika'): 'profile.png';
         $profile->smer = $request->input('smer');
         $profile->nivo_studija = $request->input('nivo_studija');
         $profile->godina_diplomiranja = $request->input('godina_diplomiranja');
@@ -184,6 +184,9 @@ class UserController extends Controller
         // Get the current users id
         $uid = $this->user->id;
 
+        // Set message
+        $msg = 'Uspešno ste ažurirali vaš profil. Čim admin prihvati, izmene biće vidljivi i ostalima.';
+
         // Get temporary profile or create new temporary profile.
         if($this->action->isTemporaryProfileExists($uid)) {
             $profile = $this->action->getTemporaryProfile($uid);
@@ -195,7 +198,7 @@ class UserController extends Controller
         $profile->langcode = 'sr';
         $profile->ime = ucwords($request->input('ime'));
         $profile->prezime = ucwords($request->input('prezime'));
-        (!empty($request->input('slika'))) ? $profile->slika = $request->input('slika'): 'profile.png';
+        $profile->slika = (!empty($request->input('slika'))) ? $request->input('slika'): 'profile.png';
         $profile->smer = $request->input('smer');
         $profile->nivo_studija = $request->input('nivo_studija');
         $profile->godina_diplomiranja = $request->input('godina_diplomiranja');
@@ -203,10 +206,12 @@ class UserController extends Controller
         $profile->radno_mesto = empty($request->input('radno_mesto')) ? '/' : $request->input('radno_mesto');
         $profile->biografija = $request->input('biografija');
         $profile->poruka = empty($request->input('poruka')) ? '' : $request->input('poruka');
+        $profile->komentar = $msg;
+        $profile->status = 'updated';   
         $profile->save();
 
         return redirect('/profile/me/show')
-            ->with('success', 'Uspešno ste ažurirali vaš profil. Čim admin prihvati biće vidljiv i ostalima.');
+            ->with('success', $msg);
     }
 
     /**
@@ -221,9 +226,9 @@ class UserController extends Controller
         $uid = $this->user->id;
 
         // Get profile
-        $profile = $this->action->getTemporaryProfile($uid);
-        $profile->delete();
-
-        return redirect('/')->with('status', 'Obrisali ste vaš profil.');
+        if ($profile = $this->action->delete($uid)) {
+            return redirect('/')->with('status', 'Obrisali ste vaš profil.');
+        }
+        return;
     }
 }
