@@ -136,7 +136,7 @@
 			{{Form::textarea('poruka', '', ['class' => 'form-control', 'placeholder' => 'Poruka (Max 750 karaktera)', 'maxlength' => 750])}}
 		</div>
 
-		{{Form::submit('Submit', ['class' => 'btn btn-primary float-right'])}}
+		{{Form::submit('Sačuvaj', ['class' => 'btn btn-primary float-right'])}}
 
 	{!! Form::close() !!}
 </div>

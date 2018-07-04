@@ -57,7 +57,7 @@ class SearchController extends Controller
                         }
                     }
                 }
-            })->orderBy('ime', 'asc')->paginate(10);
+            })->where('tip_profila', 'student')->orderBy('ime', 'asc')->paginate(10);
 
         return $profile;
     }

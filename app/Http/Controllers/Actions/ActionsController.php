@@ -165,6 +165,9 @@ class ActionsController extends Controller
         return response()->json([ 'url' => $imageName ]);
     }
 
+    /**
+     * Validate input data
+     */
     public function validateUser($input)
     {
         $rules =
@@ -190,4 +193,16 @@ class ActionsController extends Controller
 
         return $validator;
     }
+
+    /**
+     * Resize image 1:1 ratio.
+     * 
+     * @param string
+     * @return boolean
+     */
+    public function resize($image)
+    {
+       
+    }
+
 }

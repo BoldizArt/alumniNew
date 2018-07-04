@@ -50,3 +50,7 @@ Route::get('/temporary/profiles/created', 'Profile\AdminController@created')->na
 // Route::delete('/destroy/profile/me', 'Profile\AdminController@destroy')->name('destroy.profile');
 Route::post('/temporary/profiles/accept', 'Profile\AdminController@accept')->name('admin.accept');
 Route::get('/news/create', 'Profile\AdminController@index')->name('admin.news');
+
+
+// Test route
+Route::get('/test', 'Test\Test@test')->name('test');

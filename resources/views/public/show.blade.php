@@ -58,62 +58,62 @@
 	</div>
 	<hr>
 		<div class="row paddb-32">
-				<div class="col-sm-4">
-				<div class="_img-box">
-					<img src="/images/{{$profile->slika}}" alt="{{ $profile->ime }} {{$profile->prezime}}" class="_locked _img">
-				</div>
-				</div>
-				<br>
-				<div class="col-sm-8">
-				<table class="table table-striped table-hover -info">
-					<tbody>
-						<tr>
-							<td>Smer:</td>
-							<td>{{ $profile['smer'] }}</td>
-						</tr>
-						<tr>
-							<td>Nivo studija:</td>
-							<td>{{ $profile['nivo_studija'] }}</td>
-						</tr>
-						<tr>
-							<td>Godina diplomiranja:</td>
-							<td>{{ $profile->godina_diplomiranja }}</td>
-						</tr>
-						<tr>
-							<td>Naziv Firme:</td>
-							<td>{{ $profile->naziv_firme }}</td>
-						</tr>
-						<tr>
-							<td>Radno mesto:</td>
-							<td>{{ $profile->radno_mesto }}</td>
-						</tr>
-						@if(!Auth::guest())
-							@if(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->autor)
-								<tr>
-									<td><a btn class="btn btn-success" href="{{route('user.edit')}}">Izmeni</a></td>
-									<td>
-										{!! Form::open(['route' => ['user.destroy'], 'method' => 'DELETE', 'id' => 'profile-delete-form']) !!}
-											{{Form::submit('Obriši', ['class' => 'btn btn-danger', 'id' => 'profile-delete-submit'])}}
-										{!! Form::close() !!}
-									</td>
-								</tr>
-							@else
-								<tr>
-									<td>Kontakt informacije:</td>
-									<td><a btn class="btn btn-info" href="#">Pošalji poruku</a></td>
-								</tr>
-							@endif
-						@endif
-						@if(Auth::guest())
+			<div class="col-sm-4">
+			<div class="_img-box">
+				<img src="/images/{{$profile->slika}}" alt="{{ $profile->ime }} {{$profile->prezime}}" class="_locked _img">
+			</div>
+			</div>
+			<br>
+			<div class="col-sm-8">
+			<table class="table table-striped table-hover -info">
+				<tbody>
+					<tr>
+						<td>Smer:</td>
+						<td>{{ $profile['smer'] }}</td>
+					</tr>
+					<tr>
+						<td>Nivo studija:</td>
+						<td>{{ $profile['nivo_studija'] }}</td>
+					</tr>
+					<tr>
+						<td>Godina diplomiranja:</td>
+						<td>{{ $profile->godina_diplomiranja }}</td>
+					</tr>
+					<tr>
+						<td>Naziv Firme:</td>
+						<td>{{ $profile->naziv_firme }}</td>
+					</tr>
+					<tr>
+						<td>Radno mesto:</td>
+						<td>{{ $profile->radno_mesto }}</td>
+					</tr>
+					@if(!Auth::guest())
+						@if(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->autor)
+							<tr>
+								<td><a btn class="btn btn-success" href="{{route('user.edit')}}">Izmeni</a></td>
+								<td>
+									{!! Form::open(['route' => ['user.destroy'], 'method' => 'DELETE', 'id' => 'profile-delete-form']) !!}
+										{{Form::submit('Obriši', ['class' => 'btn btn-danger', 'id' => 'profile-delete-submit'])}}
+									{!! Form::close() !!}
+								</td>
+							</tr>
+						@else
 							<tr>
 								<td>Kontakt informacije:</td>
-								<td><a href="/register">Kreirajt profil</a> ili <a href="/login">prijavite se</a>.</td>
+								<td><a btn class="btn btn-info" href="#">Pošalji poruku</a></td>
 							</tr>
 						@endif
-					</tbody>
-				</table> 
-				</div>
+					@endif
+					@if(Auth::guest())
+						<tr>
+							<td>Kontakt informacije:</td>
+							<td><a href="/register">Kreirajt profil</a> ili <a href="/login">prijavite se</a>.</td>
+						</tr>
+					@endif
+				</tbody>
+			</table> 
 			</div>
+		</div>
 		<h5>Biografija</h5>
 		<p class="text-justify">{{ $profile->biografija }}</p>
 		@if($profile->poruka)

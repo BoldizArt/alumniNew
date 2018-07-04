@@ -53,11 +53,11 @@
 							@else
 								@php ($url = '/temporary/profile/')
 							@endif
-							
+
 							<tr>
 								<td><center><a href="{{ $url }}{{ $profile->id }}"><img class="locked profile-image" src="/images/{{ $profile->slika }}" alt="{{$profile->ime}} {{$profile->prezime}}"></a></center></td>
 								<td class="ime"><a href="{{ $url }}{{ $profile->id }}">{{ $profile->ime }} {{ $profile->prezime }}</a></td>
-								<td class="mobile-hide">{{ $profile->smer }} ({{ $profile->tip_profila }})</td>
+								<td class="mobile-hide">{{ $profile->smer }}</td>
 								<td>{{ $profile->godina_diplomiranja }}</td>
 								<td class="mobile-hide">{{ $profile->naziv_firme }}</td>
 							</tr>
