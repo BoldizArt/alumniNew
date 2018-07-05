@@ -3,10 +3,9 @@ $(document).ready(function()
     // Set variables
     var windowHeight = $(window).height();
     var block = false;
-    /*var mainHeight = (windowHeight-175-121);
 
-    // Set the minimum content height
-    $('.main-content').css('min-height', mainHeight);*/
+    // Resize content if smallert than needed
+    contentHeight();
 
     // ONSCROLL
     $(document).scroll( function()
@@ -77,6 +76,7 @@ $(document).ready(function()
     // Replace the profiles container with response
     function replace(response){
         $('#replaceProfiles').html(response.result);
+        contentHeight();
     }
 
     // Search function
@@ -253,5 +253,25 @@ $(document).ready(function()
         $(modal).show();
         return false;
     });
+
+    // Setting up content height
+    function contentHeight(){
+        // Define content varibale.
+        var mc = $('.main-content');
+
+        // Get sizes
+        var wh = $(window).height();
+        var nh = $('nav').outerHeight();
+        var fh = $('.footer').outerHeight();
+        var ch = mc.outerHeight();
+
+        // check if content height smller than needed.
+        var m = 84;
+        var h = wh - fh - nh - m;
+        
+        if(ch < h) {
+            mc.css('min-height', h);
+        }
+    }    
 
 });

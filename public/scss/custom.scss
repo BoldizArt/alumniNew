@@ -14,13 +14,14 @@
 @import "components/_profile";
 @import "components/_profile-picture";
 
+@import "components/share-buttons";
+
 @import "components/_alert";
 @import "components/_footer";
 
 html, body{
     margin: 0;
-    padding: 0;
-    height: 100%;   
+    padding: 0;  
 }
 
 .card-alert{

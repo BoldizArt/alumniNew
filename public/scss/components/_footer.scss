@@ -6,19 +6,34 @@
     a{
         color: $lightGrey;
     }
+    p{
+        margin: 0;
+    }
     .up-to-top{
-        width: 25px;
-        height: 25px;
         position: absolute;
-        top: 45px;
-        right: 50px;
-        .-icon{
-           color: $lightGrey;
-           font-size: 35px;
-           &:hover{
-               color: $white;
-               cursor: pointer;
-           }
+        bottom: 45px;
+        right: 45px;
+        .btn-mine{
+            background-color: $darkGrey;
+            border: 1px solid $lightGrey;
+            color: $lightGrey;
+            padding: 15px;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            svg{
+                width: 20px;
+                height: 20px;
+            }
+            &:hover{
+                background-color: $lightGrey;
+                cursor: pointer;
+                svg{
+                    color: $darkGrey
+                }
+            }
         }
     }
 }
+
+
