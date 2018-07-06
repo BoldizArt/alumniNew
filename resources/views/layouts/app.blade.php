@@ -32,24 +32,8 @@
 
     </body>
     <footer>
-        <div class="share-buttons">
-            <button type="button" class="btn btn-success">
-                <i class="fas fa-folder-open"></i>
-            </button>
-            <button type="button" class="btn btn-info">
-                <i class="fas fa-share-alt"></i>
-            </button>
-            <button type="button" class="btn btn-warning">
-                <i class="fas fa-cloud-download-alt"></i>
-            </button>
-            <button onclick="window.location.href='{{ route('public.contact') }}'" type="button" class="btn btn-danger" href="/test">
-                <i class="fas fa-envelope"></i>
-            </button>
-            <button type="button" class="btn btn-danger active">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
 
+        @extends('inc.fixed-buttons')
         @extends('layouts.footer')
         
         <!-- Scripts -->

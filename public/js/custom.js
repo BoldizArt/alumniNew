@@ -4,6 +4,9 @@ $(document).ready(function()
     var windowHeight = $(window).height();
     var block = false;
 
+    // Add tooltip to website.
+    $('[data-toggle="tooltip"]').tooltip(); 
+
     // Resize content if smallert than needed
     contentHeight();
 
@@ -272,6 +275,6 @@ $(document).ready(function()
         if(ch < h) {
             mc.css('min-height', h);
         }
-    }    
+    }
 
 });

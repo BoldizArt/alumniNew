@@ -36,9 +36,9 @@
   <div class="container">    
     <div class="row paddtb-32">
       @if(count($data) > 0)
-     
+        @php($no = 1)
         @foreach($data['profiles'] as $profile)
-          <div class="col-sm-3 pocetna_studenti">
+          <div class="col-sm-6 col-md-4 col-lg-3 pocetna_studenti @if($no > 6) hidden-md @endif">
             <center>
               <div class="cont">
                 <a href="/profile/{{$profile->id}}">
@@ -60,6 +60,7 @@
               <h5>{{$profile->smer}}</h5>
             </center>
           </div>
+          @php($no++)
         @endforeach
       @endif
     </div>
@@ -71,23 +72,6 @@
   <div class="fluid-container statistics-container">
     <div class="container">
       <div class="row">
-
-          <style>
-              .statistics-container .-icon{
-                color: #fff;
-                border: 4px solid #fff;
-                width: 68px;
-                height: 68px;
-                border-radius: 50px;
-                padding: 12px;
-                margin-bottom: 15px;
-              }
-              .statistics-container{
-                color: #fff;
-              }
-              
-            </style>
-            
         <div class="col-sm-3 text-center">
           <i class="-icon fas fa-users"></i>
           <h2 class="statistic-count">{{$data['statistics']['all']}}</h2>
@@ -126,9 +110,9 @@
                     </div>
                   </a>
                 </div>
-                <div class="-msg col-md-8 text-md-left text-center">
-                  <div class="-text">
-                    <p class="text-justify">
+                <div class="-msg col-md-8 text-md-left text-center clearfix">
+                  <div class="-message-text">
+                    <p class="text-justify -size">
                       <i class="fas fa-quote-left"></i>
                         <i>{{$message->poruka}}</i>
                       <i class="fas fa-quote-right"></i>
