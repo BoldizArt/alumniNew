@@ -1,3 +1,9 @@
+<style>
+	.width100 {
+		width: 100%;
+	}
+</style>
+
 @extends('layouts.app')
 
 @section('content')
@@ -9,16 +15,27 @@
 		</div>
 		<hr>
 
-
-
 		@foreach ($team as $type => $members)
 			<div class="container">    
 				<div class="row paddtb-32">
 					<div class="col-sm-12 text-center">
 						<h4 class="team-type">Alumni {{ $type }}i</h4>
 					</div>
+					@php($count = count($members))
+					@if($count == 1)
+						@php($class = 'width100')
+					@elseif($count == 2)
+						@php($class = 'col-sm-6')	
+					@elseif($count == 3)
+						@php($class = 'col-sm-4')
+					@elseif($count == 4)
+						@php($class = 'col-sm-6 col-md-4 col-lg-3')
+					@endif
+
 					@foreach ($members as $member)
-						<div class="col-sm-3 pocetna_studenti">
+					<div class="{{ $class }}">
+						<center>
+						<div class="profile-box" style="max-width: 300px;">
 							<center>
 								<div class="cont">
 									<a href="/team/{{$member->id}}">
@@ -40,11 +57,14 @@
 								<h5>{{$member->smer}}</h5>
 							</center>
 						</div>
+					</center>
+					</div>
 					@endforeach
+					
 				</div>
+				<hr />
 			</div>
 		@endforeach
-+
 	</div>
 
 @endsection
