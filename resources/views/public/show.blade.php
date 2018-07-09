@@ -88,7 +88,17 @@
 						<td>{{ $profile->radno_mesto }}</td>
 					</tr>
 					@if(!Auth::guest())
-						@if(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->autor)
+						@if($profile->uid == 0 AND Auth::user()->id == $profile->autor)
+							<tr>
+								<td><a btn class="btn btn-success" href="{{route('admin.team-edit', ['team' => $profile->id])}}">Izmeni</a></td>
+								<td>
+									{!! Form::open(['route' => ['admin.team-destroy'], 'method' => 'DELETE', 'id' => 'profile-delete-form']) !!}
+									{{Form::hidden('id', $profile->id)}}
+									{{Form::submit('Obriši', ['class' => 'btn btn-danger', 'id' => 'profile-delete-submit'])}}
+									{!! Form::close() !!}
+								</td>
+							</tr>
+						@elseif(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->autor)
 							<tr>
 								<td><a btn class="btn btn-success" href="{{route('user.edit')}}">Izmeni</a></td>
 								<td>

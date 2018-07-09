@@ -77,7 +77,34 @@
 			</div>
 			<div class="col-sm-9">
 
-				{!! Form::open(['route' => ['user.update'], 'method' => 'POST']) !!}
+				@if(\Request::route()->getName() == 'admin.team-edit')
+					{!! Form::open(['route' => 'admin.store', 'method' => 'POST']) !!}
+				
+					@if(Auth::user() AND (Auth::user()->role == 1 OR Auth::user()->id == 1))
+						<div class="form-group @if($errors->has('tip_profila')) has-danger @endif">
+							{{Form::label('tip_profila', 'Tip profila')}}
+							{{ Form::select('tip_profila', [
+								'student' => 'Student',
+								'programer' => 'Alumni programer',
+								'koordinator' => 'Alumni koordinator',
+								'mentor' => 'Alumni mentor'
+								],
+								$profile->tip_profila,
+								['class' => 'form-control', 'placeholder' => 'Tip profila']
+							) }}
+
+							@if($errors->has('tip_profila'))
+								<small id="passwordHelp" class="text-danger">{{ $errors->first('tip_profila') }}</small> 
+							@endif
+						</div>
+			
+						{{Form::hidden('autor', Auth::user()->id)}}
+						{{Form::hidden('id', $profile->id)}}
+					@endif
+			
+				@else
+					{!! Form::open(['route' => ['user.update'], 'method' => 'POST']) !!}
+				@endif
 
 				{{Form::hidden('slika', $profile->slika, ["class" => "profile-picture-name"])}}
 				

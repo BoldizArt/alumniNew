@@ -113,7 +113,7 @@ class PublicController extends Controller
             return redirect()->back()->withErrors(['msg' => 'Ne možemo da nađemo ovaj korisnik.']);
         }
 
-        return $member;//view('public.show')->with('profile', $member);
+        return view('public.team-member')->with('profile', $member);
     }
 
 }

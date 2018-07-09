@@ -136,7 +136,7 @@ class AdminController extends Controller
             $profile->save();
 
             if ($status == 'active') {
-                if ($profile) $save = $this->save($profile);
+                if ($profile) $save = $this->save($profile, $this->profile);
                 if ($save) $delete = $this->deleteTemporary($pid);
             }
 
@@ -169,19 +169,28 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $all = $request->all();
-        $msg = 'Došlo je do greške, pokušajte kasnije.';
-
+        
+        $msg = __('Kreirali ste profil.');
         // Create an object from the array.
         $data = json_decode(json_encode($all), FALSE);
-        $data->uid = 0;
+        
+        // Get profile or create new profile.
+        $profile = $this->profile;
+        if (isset($data->id)) {
+            $msg = __('Ažurirali ste profil.');
+            $profile = $this->profile->find($data->id);
+        }
+
+        // Define uid if not isset.
+        if (!isset($data->uid)) $data->uid = 0;
 
         // Save this resource
-        $save = $this->save($data);
+        $save = $this->save($data, $profile);
         if ($save) {
-            $msg = 'Kreirali ste profil.';
             return redirect()->route('admin.created')->with('success', $msg);
         }
 
+        $msg = 'Došlo je do greške, pokušajte kasnije.';
         return redirect()->back()->with('alert', $msg);
     }
 
@@ -192,14 +201,11 @@ class AdminController extends Controller
      * @param  object $data
      * @return \Illuminate\Http\Response
      */
-    public function save($data)
+    public function save($data, $profile)
     {
         // If not isset author id use uid for it.
         $autor = ($data->autor) ? $data->autor : $data->uid;
-        
-        // Get profile or create new profile.
         $saved = false;
-        if ($data->uid == 0 || !$profile = $this->action->getProfile($data->uid)) $profile = $this->profile;
         $tipProfila = ($data->tip_profila) ? $data->tip_profila : 'student';
 
         // Set profile
@@ -262,5 +268,33 @@ class AdminController extends Controller
 
         return ($delete) ? true : false;
     }
+
+    public function teamEdit($id)
+    {
+        // If isset the profile, return view
+        if($profile = $this->profile::find($id))
+        {
+            $title = __('Izmeni profil');
+            return view('user.edit')->with(['profile' => $profile, 'title' => $title]);
+        }
+
+        return redirect()->back()->with('alert', __('Došlo je do greške, pokušajte kasnije'));
+    }
+
+    public function teamDestroy(Request $request)
+    {
+        $id = (int)$request->post('id');
+
+        $delete = false;
+        if ($profile = $this->profile::find($id)) {
+            $delete = $profile->delete();
+        }
+
+        if ($delete) return redirect()->route('admin.created')->with('success', __('Uspešno ste obrisali profil.'));
+
+        return redirect()->back()->with('alert', __('Došlo je do greške, pokušajte kasnije'));        
+    }
+
+
 
 }
