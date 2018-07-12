@@ -7,8 +7,12 @@ $(document).ready(function()
     // Add tooltip to website.
     $('[data-toggle="tooltip"]').tooltip(); 
 
-    // Resize content if smallert than needed
+    // Resize content if smaller than needed.
     contentHeight();
+
+    // Hide source code from website
+    blockF12();
+    blockContextMenu();
 
     // ONSCROLL
     $(document).scroll( function()
@@ -275,6 +279,25 @@ $(document).ready(function()
         if(ch < h) {
             mc.css('min-height', h);
         }
+    }
+
+    // These functions hide source code from the website.
+    // Block F12 button press.
+    function blockF12(){
+        document.onkeydown = function(event) {
+            event = (event || window.event);
+            if(event.keyCode == 123){
+                event.preventDefault();
+                return false;
+            }
+        }
+    }
+
+    // Block right click.
+    function blockContextMenu(){
+        $('body').contextmenu(function(){
+            return false;
+        });
     }
 
 });

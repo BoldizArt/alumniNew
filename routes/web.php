@@ -49,6 +49,7 @@ Route::get('/temporary/profiles/created', 'Profile\AdminController@created')->na
 // Route::post('/update/profile/me', 'Profile\AdminController@update')->name('update.profile');
 // Route::delete('/destroy/profile/me', 'Profile\AdminController@destroy')->name('destroy.profile');
 Route::post('/temporary/profiles/accept', 'Profile\AdminController@accept')->name('admin.accept');
+Route::get('/edit', 'Profile\AdminController@index')->name('admin.home');
 Route::get('/news/create', 'Profile\AdminController@index')->name('admin.news');
 
 Route::get('/team/{team}/edit', 'Profile\AdminController@teamEdit')->where('team', '[A-Za-z0-9]+')->name('admin.team-edit');

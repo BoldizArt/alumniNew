@@ -36,7 +36,9 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                            <a class="dropdown-item" href="{{ route('user.show') }}"><i class="fas fa-user"></i> {{ __('Moj profil') }}</a>
+                            <a class="dropdown-item" href="{{ route('user.show') }}">
+                                <i class="fas fa-user"></i> {{ __('Moj profil') }}
+                            </a>
                             @if(Auth::user()->role)
                                 <a class="dropdown-item" href="{{ route('admin.create') }}">
                                     <i class="fas fa-user-plus"></i> {{ __('Dodaj profil') }}
@@ -50,6 +52,13 @@
                                 <a class="dropdown-item" href="{{ route('admin.created') }}">
                                     <i class="fas fa-users"></i> {{ __('Kreirani profili') }}
                                 </a>
+                                {{-- <a class="dropdown-item" href="{{ route('admin.home') }}">
+                                    <i class="fas fa-home"></i> {{ __('Izmeni početnu') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.news') }}">
+                                    <i class="fas fa-newspaper"></i> {{ __('Dodaj vest') }}
+                                </a> --}}
+
                             @endif
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();

@@ -88,32 +88,34 @@
 						<td>{{ $profile->radno_mesto }}</td>
 					</tr>
 					@if(!Auth::guest())
-						@if($profile->uid == 0 AND Auth::user()->id == $profile->autor)
-							<tr>
-								<td><a btn class="btn btn-success" href="{{route('admin.team-edit', ['team' => $profile->id])}}">Izmeni</a></td>
-								<td>
-									{!! Form::open(['route' => ['admin.team-destroy'], 'method' => 'DELETE', 'id' => 'profile-delete-form']) !!}
-									{{Form::hidden('id', $profile->id)}}
-									{{Form::submit('Obriši', ['class' => 'btn btn-danger', 'id' => 'profile-delete-submit'])}}
-									{!! Form::close() !!}
-								</td>
-							</tr>
-						@elseif(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->autor)
-							<tr>
-								<td><a btn class="btn btn-success" href="{{route('user.edit')}}">Izmeni</a></td>
-								<td>
-									{!! Form::open(['route' => ['user.destroy'], 'method' => 'DELETE', 'id' => 'profile-delete-form']) !!}
+						@if($profile->status !== 'blocked')
+							@if($profile->uid == 0 AND Auth::user()->id == $profile->autor)
+								<tr>
+									<td><a btn class="btn btn-success" href="{{route('admin.team-edit', ['team' => $profile->id])}}">Izmeni</a></td>
+									<td>
+										{!! Form::open(['route' => ['admin.team-destroy'], 'method' => 'DELETE', 'id' => 'profile-delete-form']) !!}
+										{{Form::hidden('id', $profile->id)}}
 										{{Form::submit('Obriši', ['class' => 'btn btn-danger', 'id' => 'profile-delete-submit'])}}
-									{!! Form::close() !!}
-								</td>
-							</tr>
-						@else
-							<tr>
-								<td>Kontakt informacije:</td>
-								<td><a btn class="btn btn-info" href="#">Pošalji poruku</a></td>
-							</tr>
+										{!! Form::close() !!}
+									</td>
+								</tr>
+							@elseif(Auth::user()->id == $profile->uid OR Auth::user()->id == $profile->autor)	
+								<tr>
+									<td><a btn class="btn btn-success" href="{{route('user.edit')}}">Izmeni</a></td>
+									<td>
+										{!! Form::open(['route' => ['user.destroy'], 'method' => 'DELETE', 'id' => 'profile-delete-form']) !!}
+											{{Form::submit('Obriši', ['class' => 'btn btn-danger', 'id' => 'profile-delete-submit'])}}
+										{!! Form::close() !!}
+									</td>
+								</tr>
+							@else
+								<tr>
+									<td>Kontakt informacije:</td>
+									<td><a btn class="btn btn-info" href="#">Pošalji poruku</a></td>
+								</tr>
+							@endif
 						@endif
-					@endif
+					@endif						
 					@if(Auth::guest())
 						<tr>
 							<td>Kontakt informacije:</td>

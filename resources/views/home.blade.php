@@ -88,7 +88,7 @@
           <p>Master inženjera</p>
         </div>
         <div class="col-sm-3 text-center">
-          <i class="-icon fas fa-trophy"></i>
+          <i class="-icon fas fa-user-graduate"></i>
           <h2 class="statistic-count">{{$data['statistics']['dr']}}</h2>
           <p>Doktora nauke</p>
         </div>
