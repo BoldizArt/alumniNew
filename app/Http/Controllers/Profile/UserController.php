@@ -149,7 +149,7 @@ class UserController extends Controller
         // If isset the profile, return view
         if($profile = $this->action->get($uid))
         {
-            $title = __('Izmeni profil');
+            $title = 'Izmeni profil';
             return view('user.edit')->with(['profile' => $profile, 'title' => $title]);
         }
 
