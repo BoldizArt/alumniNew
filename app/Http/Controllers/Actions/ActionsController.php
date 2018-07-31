@@ -160,10 +160,55 @@ class ActionsController extends Controller
             $imageName = $name.'_'.time().'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('/images');
             $image->move($destinationPath, $imageName);
+
+            // Crop image to has 1:1 resolution.
+            $this->cropImage($destinationPath, $imageName);
         }
 
         return response()->json([ 'url' => $imageName ]);
     }
+
+    /**
+     * Crop image to have resolution 1:1.
+     * @param string $path
+     * @param string $name
+     */
+    public function cropImage($path, $name)
+    {
+        // the image to crop
+        $image = $path.'/'.$name;
+        
+        // make sure the directory is writeable
+        $dest_image = $path.'/'.$name; 
+
+        // Get image size;
+        $ims = getimagesize($image);
+        $w = $ims[0];
+        $h = $ims[1];
+
+        // Set max value.
+        $max = ($w - $h > 0) ? $h : $w;
+
+        // imagecreatetruecolor
+        $img = imagecreatetruecolor($max, $max);
+
+        // Check extension
+        if ($ims['mime'] == 'image/jpg' || $ims['mime'] == 'image/jpeg') {
+            $org_img = imagecreatefromjpeg($image);
+        } else {
+            $org_img = imagecreatefrompng($image);
+        }
+
+        // Crop image
+        $a = ($w - $h > 0) ? (($w - $h) / 2) : 0;
+        $b = ($h - $w > 0) ? (($h - $w) / 2) : 0;
+        imagecopy($img, $org_img, 0, 0, $a, $b, $max, $max);
+
+        imagejpeg($img, $dest_image, 90);
+
+        // imagedestroy($img);
+    }
+
 
     /**
      * Validate input data
