@@ -7,7 +7,7 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class="container show-profile">
+	<div class="container show-profile alumni-team">
 		<div class="row">
 			<div class="col-sm-6">
 				<h2 class="-title">{{ $title }}<h2>
@@ -17,25 +17,14 @@
 
 		@foreach ($team as $type => $members)
 			<div class="container">    
-				<div class="row paddtb-32">
+				<div class="row paddtb-32 flexed-content">
 					<div class="col-sm-12 text-center">
 						<h4 class="team-type">Alumni {{ $type }}i</h4>
 					</div>
-					@php($count = count($members))
-					@if($count == 1)
-						@php($class = 'width100')
-					@elseif($count == 2)
-						@php($class = 'col-sm-6')	
-					@elseif($count == 3)
-						@php($class = 'col-sm-4')
-					@elseif($count == 4)
-						@php($class = 'col-sm-6 col-md-4 col-lg-3')
-					@endif
-
 					@foreach ($members as $member)
-					<div class="{{ $class }}">
+					<div class="col-sm-4 col-md-3 raw">
 						<center>
-						<div class="profile-box" style="max-width: 300px;">
+						<div class="profile-box">
 							<center>
 								<div class="cont">
 									<a href="/team/{{$member->id}}">
@@ -60,11 +49,30 @@
 					</center>
 					</div>
 					@endforeach
-					
+					<div class="row separator">
 				</div>
-				<hr />
 			</div>
 		@endforeach
 	</div>
 
 @endsection
+
+<style>
+	.alumni-team ._img-box {
+		width: 90% !important;
+		max-width: 90% !important;
+	}
+	.alumni-team ._img-box ._img{
+		min-width: 220px !important;
+	}
+	.alumni-team .flexed-content {
+		display: flex;
+		justify-content: space-around;
+	}
+	.alumni-team .separator {
+		padding-bottom: 45px;
+		margin-bottom: 45px;
+		border-bottom: 1px solid #ccc;
+		width: 100%;
+	}
+</style>

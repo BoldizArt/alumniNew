@@ -122,21 +122,23 @@ class AdminController extends Controller
      */
     public function accept(Request $request)
     {
-        if ($request->post('pid')) { 
-            $pid = $request->post('pid');
+        if ($pid = $request->post('pid')) {
             $status = $request->post('status');
             $komentar = $request->post('komentar');
 
             // Get user from temporary profile by profile id
-            $profile = $this->temporary::find($pid);
+            $temporaryProfile = $this->temporary::find($pid);
 
             // Update temporary profile
-            $profile->komentar = $komentar;
-            $profile->status = $status;
-            $profile->save();
+            $temporaryProfile->komentar = $komentar;
+            $temporaryProfile->status = $status;
+            $temporaryProfile->save();
 
             if ($status == 'active') {
-                if ($profile) $save = $this->save($profile, $this->profile);
+                // Check if isset active profile with this uid, load this profile for update.
+                $uid = $temporaryProfile->uid;
+                $profile = ($p = $this->profile::where('uid', $uid)->first()) ? $p : $this->profile;
+                if ($temporaryProfile) $save = $this->save($temporaryProfile, $profile);
                 if ($save) $delete = $this->deleteTemporary($pid);
             }
 
