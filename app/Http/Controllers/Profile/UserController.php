@@ -88,8 +88,9 @@ class UserController extends Controller
         // Validate request
         $validator = $this->action->validateUser($input);
 
-        if ($validator->fails()) {
-            return redirect('profile/me/create')
+        if ($validator->fails())
+        {
+            return back()
                 ->withErrors($validator)
                 ->withInput();
         }

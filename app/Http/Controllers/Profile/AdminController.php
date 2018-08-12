@@ -172,13 +172,23 @@ class AdminController extends Controller
     {
         $all = $request->all();
         
+        // Validate request
+        $validator = $this->action->validateUser($all);
+
+        if ($validator->fails())
+        {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $msg = __('Kreirali ste profil.');
         // Create an object from the array.
         $data = json_decode(json_encode($all), FALSE);
         
         // Get profile or create new profile.
         $profile = $this->profile;
-        if (isset($data->id)) {
+        if (isset($data->id)) { 
             $msg = __('Ažurirali ste profil.');
             $profile = $this->profile->find($data->id);
         }
