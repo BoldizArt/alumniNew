@@ -1,6 +1,6 @@
 <?php
 
-namespace Alumni\Http\Controllers\Home;
+namespace Alumni\Http\Controllers\Email;
 
 use Illuminate\Http\Request;
 use Alumni\Http\Controllers\Controller;
@@ -18,9 +18,9 @@ class EmailController extends Controller
     protected $content;
     protected $attach;
 
-    public function __construct(Mail $mail)
+    public function __construct()
     {
-        $this->sendMail = $mail;
+        $this->sendMail = new Mail();
     }
 
     /**

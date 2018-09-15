@@ -58,3 +58,6 @@ Route::delete('/team/destroy', 'Profile\AdminController@teamDestroy')->name('adm
 
 // Test route
 Route::get('/test', 'Test\Test@test')->name('test');
+
+// Send mail route.
+Route::post('send/mail', 'Email\EmailActions@send')->name('send.mail')->middleware('auth');

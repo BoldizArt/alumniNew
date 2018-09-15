@@ -64,7 +64,7 @@
 			</div>
 			</div>
 			<br>
-			<div class="col-sm-8">
+			<div class="col-sm-8 vertical-center">
 			<table class="table table-striped table-hover -info">
 				<tbody>
 					<tr>
@@ -111,10 +111,13 @@
 							@else
 								<tr>
 									<td>Kontakt informacije:</td>
-									<td><a btn class="btn btn-info" href="#">Pošalji poruku</a></td>
+									<td><a data-toggle="modal" data-target="#mail-modal" id="send-mail" class="btn btn-info" href="#">Pošalji poruku</a></td>
 								</tr>
 							@endif
 						@endif
+
+						@extends('modals.mail', ['pid' => $profile->id])
+
 					@endif						
 					@if(Auth::guest())
 						<tr>

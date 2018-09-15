@@ -42,13 +42,13 @@ class PublicController extends Controller
      */
     public function show($id)
     {
-        $profiles = $this->profile::where('tip_profila', 'student')->find($id);
+        $profile = $this->profile::where('tip_profila', 'student')->find($id);
 
-        if(count($profiles) < 1){
+        if(empty($profile)){
             return redirect()->back()->withErrors(['msg' => 'Can not find this user.']);
         }
 
-        return view('public.show')->with('profile', $profiles);
+        return view('public.show')->with('profile', $profile);
     }
 
     /**
@@ -109,7 +109,7 @@ class PublicController extends Controller
     {
         $member = $this->profile::whereNotIn('tip_profila', ['student'])->find($id);
 
-        if(count($member) < 1){
+        if (empty($member)) {
             return redirect()->back()->withErrors(['msg' => 'Ne možemo da nađemo ovaj korisnik.']);
         }
 

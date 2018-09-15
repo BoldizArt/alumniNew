@@ -339,6 +339,16 @@
 .show-profile .-info td {
   padding: 15px 25px;
 }
+.show-profile .vertical-center {
+  display: flex;
+  align-items: center;
+}
+.show-profile #profile-delete-form {
+  margin: 0px;
+}
+.show-profile h5 {
+  padding-top: 20px;
+}
 
 .share-buttons {
   position: fixed;
@@ -368,6 +378,10 @@
   -o-animation: fadein 480ms ease;
   -ms-animation: fadein 480ms ease;
   animation: fadein 480ms ease;
+}
+
+#mail-modal {
+  z-index: 99999999999999;
 }
 
 .footer {

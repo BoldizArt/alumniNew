@@ -64,7 +64,7 @@
 			</div>
 			</div>
 			<br>
-			<div class="col-sm-8">
+			<div class="col-sm-8 vertical-center">
 			<table class="table table-striped table-hover -info">
 				<tbody>
 
@@ -74,15 +74,11 @@
 					</tr>
 					<tr>
 						<td>Nivo studija:</td>
-						<td>{{ $profile['nivo_studija'] }}</td>
+						<td>{{ $profile->nivo_studija }}</td>
 					</tr>
 					<tr>
 						<td>Status:</td>
-						<td>{{ $profile->radno_mesto }} ({{ $profile->naziv_firme }})</td>
-					</tr>
-					<tr>
-						<td>Smer:</td>
-						<td>{{ $profile['smer'] }}</td>
+						<td>{{ $profile->radno_mesto }} ({{ $profile->smer }})</td>
 					</tr>
 
 					@if(!Auth::guest())

@@ -24,4 +24,14 @@
             padding: 15px 25px;
         }
     }
+    .vertical-center {
+		display: flex;
+		align-items: center;
+	}
+	#profile-delete-form {
+		margin: 0px;
+	}
+	h5 {
+		padding-top: 20px;
+	}
 }

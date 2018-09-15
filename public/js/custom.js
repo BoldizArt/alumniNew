@@ -14,6 +14,48 @@ $(document).ready(function()
     blockF12();
     blockContextMenu();
 
+    // Call the modal form on send mail click.
+    // $(document).on('click', '#send-mail', function(e) {
+    //     e.preventDefault();
+    //     $.get('/message/modal').done(function(response) {
+    //         $('body').append(response.modal);
+    //         $('body').find('#mail-modal').addClass('show').show();
+    //     });
+    // });
+
+    // On select profile type, change the form.
+    var status = 'Status (Student, Profesor...)';
+    $(document).on('change', '#tip_profila', function() {
+        var value = $(this).val();
+        changeForm(value, status);
+    });
+
+    // Check the profile type, and change the form by type.
+    var tip = $('#tip_profila');
+    if (typeof(tip) != 'undefined') {
+        var value = $(tip).val();
+        changeForm(value, status);
+    }
+
+    // Change the fomrm. 
+    function changeForm(value, status) {
+        if (value != 'student') {
+            $('#godina_diplomiranja').parent('div').hide();
+            $('#naziv_firme').val('/').parent('div').hide();
+            $('#radno_mesto').attr('placeholder', status)
+                .parent('div')
+                .children('label')
+                .text(status);
+        } else {
+            $('#godina_diplomiranja').parent('div').show();
+            $('#naziv_firme').val('').parent('div').show();
+            $('#radno_mesto').attr('placeholder', 'Radno mesto')
+                .parent('div')
+                .children('label')
+                .text('Radno mesto');
+        }
+    }
+
     // ONSCROLL
     $(document).scroll( function()
     {
